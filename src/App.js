@@ -10,12 +10,25 @@ class App extends Component {
     this.state = {
       points: [],
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleSubmit(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      const points = this.state.points.slice(0);
+      const newPoint = e.target.value;
+
+      this.setState({ points: points.concat(newPoint) });
+    }
+  }
+
   render() {
     return (
       <main className="App">
         <div className="App-Dashboard">
-          <PointInput />
+          <PointInput onKeyPress={this.handleSubmit} />
           <PointList />
         </div>
         <MapContainer />
@@ -26,7 +39,7 @@ class App extends Component {
 
 function PointInput(props) {
   return (
-    <input className="App-Input" type="text"/>
+    <input className="App-Input" type="text" {...props}/>
   );
 }
 
