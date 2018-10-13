@@ -4,6 +4,13 @@ import React, { Component } from 'react';
 import MapContainer from './MapContainer/MapContainer.js';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      points: [],
+    };
+  }
   render() {
     return (
       <main className="App">
