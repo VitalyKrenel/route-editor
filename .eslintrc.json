@@ -8,10 +8,15 @@
     "ymaps": true
   },
   "rules": {
+    "space-before-function-paren": ["error", {
+      "named": "never",
+      "anonymous": "always",
+      "asyncArrow": "always"
+    }],
     "no-use-before-define": [
       "error", {
-        "functions": false, 
-        "classes": false, 
+        "functions": true, 
+        "classes": true, 
         "variables": true
       }
     ],
