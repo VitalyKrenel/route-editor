@@ -10,24 +10,24 @@ class App extends Component {
     super(props);
 
     this.state = {
-      points: [],
+      locations: [],
     };
-    this.addPoint = this.addPoint.bind(this);
+    this.addLocationPoint = this.addLocationPoint.bind(this);
   }
 
-  addPoint(value) {
-    const points = this.state.points.slice(0);
-    const newPoint = value;
+  addLocationPoint(value) {
+    const locations = this.state.locations.slice(0);
+    const newLocationPoint = value;
     console.log(value);
-    this.setState({ points: points.concat(newPoint) });
+    this.setState({ locations: locations.concat(newLocationPoint) });
   }
 
   render() {
     return (
       <main className="App">
         <div className="App-Dashboard">
-          <PointInput onSubmit={this.addPoint} />
-          <PointList locations={this.state.points} />
+          <PointInput onSubmit={this.addLocationPoint} />
+          <PointList locations={this.state.locations} />
         </div>
         <MapContainer />
       </main>
