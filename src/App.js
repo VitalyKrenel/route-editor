@@ -26,7 +26,7 @@ class App extends Component {
       <main className="App">
         <div className="App-Dashboard">
           <PointInput onSubmit={this.addPoint} />
-          <PointList />
+          <PointList points={this.state.points} />
         </div>
         <MapContainer />
       </main>
@@ -34,10 +34,20 @@ class App extends Component {
   }
 }
 
-
 function PointList(props) {
+  const { points } = props;
+
+  const listItems = points.map((point) => (
+    <li style={{ display: 'flex', }}>
+      <div style={{ marginRight: '20px', }}>{point}</div>
+      <button style={{ fontSize: '18px', }}>×</button>
+    </li>
+  ));
+
   return (
-    <ul className="App-List"></ul>
+    <ul className="App-List">
+      {listItems}
+    </ul>
   );
 }
 
