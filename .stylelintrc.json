@@ -208,6 +208,7 @@
           "perspective",
           "perspective-origin",
           "visibility",
+          "content",
           "cursor",
           "opacity",
           "filter",
