@@ -1,0 +1,48 @@
+:root {
+  --map-width: 600px;
+  --map-height: 600px;
+}
+
+.MapContainer {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--map-width);
+  height: var(--map-height);
+
+  background: #eee;
+}
+
+.MapContainer_status_loading::after {
+  position: absolute;
+
+  display: block;
+  width: 64px;
+  height: 64px;
+
+  border: 2px solid rgba(87, 87, 87, 0.4);
+  border-top: 2px solid rgb(62, 78, 216);
+  border-left: 2px solid rgb(62, 78, 216);
+
+  border-radius: 50%;
+  content: '';
+
+  animation: spin 0.9s ease-in-out infinite;
+}
+
+.Map {
+  width: var(--map-width);
+  height: var(--map-height);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

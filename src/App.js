@@ -1,24 +1,20 @@
-import React, { Component } from 'react';
 import './App.css';
 
+import React, { Component } from 'react';
+import MapContainer from './MapContainer.js';
+
 class App extends Component {
-  render() {
+  render() {    
     return (
       <main className="App">
         <div className="App-Dashboard">
           <PointInput />
           <PointList />
-        </div> 
-        <Map />
+        </div>
+        <MapContainer />
       </main>
     );
   }
-}
-
-function Map(props) {
-  return (
-    <div className="App-Map" id="map"></div>
-  );
 }
 
 function PointInput (props) {
