@@ -3,6 +3,7 @@ import './App.css';
 import React, { Component } from 'react';
 import MapContainer from './MapContainer/MapContainer.js';
 import PointInput from './PointInput/PointInput.js';
+import PointList from './PointList/PointList.js';
 
 class App extends Component {
   constructor(props) {
@@ -26,29 +27,12 @@ class App extends Component {
       <main className="App">
         <div className="App-Dashboard">
           <PointInput onSubmit={this.addPoint} />
-          <PointList points={this.state.points} />
+          <PointList locations={this.state.points} />
         </div>
         <MapContainer />
       </main>
     );
   }
-}
-
-function PointList(props) {
-  const { points } = props;
-
-  const listItems = points.map((point) => (
-    <li style={{ display: 'flex', }}>
-      <div style={{ marginRight: '20px', }}>{point}</div>
-      <button style={{ fontSize: '18px', }}>×</button>
-    </li>
-  ));
-
-  return (
-    <ul className="App-List">
-      {listItems}
-    </ul>
-  );
 }
 
 export default App;
