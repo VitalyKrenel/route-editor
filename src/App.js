@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import MapContainer from './MapContainer/MapContainer.js';
 
 class App extends Component {
-  render() {    
+  render() {
     return (
       <main className="App">
         <div className="App-Dashboard">
@@ -17,7 +17,7 @@ class App extends Component {
   }
 }
 
-function PointInput (props) {
+function PointInput(props) {
   return (
     <input className="App-Input" type="text"/>
   );
