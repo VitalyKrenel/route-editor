@@ -2,6 +2,7 @@ import './App.css';
 
 import React, { Component } from 'react';
 import MapContainer from './MapContainer/MapContainer.js';
+import PointInput from './PointInput/PointInput.js';
 
 class App extends Component {
   constructor(props) {
@@ -10,25 +11,21 @@ class App extends Component {
     this.state = {
       points: [],
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.addPoint = this.addPoint.bind(this);
   }
 
-  handleSubmit(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-
-      const points = this.state.points.slice(0);
-      const newPoint = e.target.value;
-
-      this.setState({ points: points.concat(newPoint) });
-    }
+  addPoint(value) {
+    const points = this.state.points.slice(0);
+    const newPoint = value;
+    console.log(value);
+    this.setState({ points: points.concat(newPoint) });
   }
 
   render() {
     return (
       <main className="App">
         <div className="App-Dashboard">
-          <PointInput onKeyPress={this.handleSubmit} />
+          <PointInput onSubmit={this.addPoint} />
           <PointList />
         </div>
         <MapContainer />
@@ -37,11 +34,6 @@ class App extends Component {
   }
 }
 
-function PointInput(props) {
-  return (
-    <input className="App-Input" type="text" {...props}/>
-  );
-}
 
 function PointList(props) {
   return (
