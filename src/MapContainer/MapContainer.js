@@ -61,6 +61,7 @@ export default class MapContainer extends Component {
             // modules={modules}  
             defaultState={mapState} 
             onLoad={this.handleLoad}
+            instanceRef={ref => (this.map = ref)}
           >
             {placemarkComponents}
           </Map>
