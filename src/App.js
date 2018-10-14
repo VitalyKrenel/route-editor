@@ -41,7 +41,7 @@ class App extends Component {
           <PointInput onSubmit={this.addLocationPoint} />
           <PointList locations={this.state.locations} />
         </div>
-        <MapContainer placemarks={this.state.locations} />
+        <MapContainer locations={this.state.locations} />
       </main>
     );
   }
