@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
 
 const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
-const modules = ['route'];
+const modules = ['multiRouter.MultiRoute'];
 const mapState = { center: [55.75, 37.57], zoom: 9 };
 
 export const generateGeometry = () => {
@@ -32,18 +32,14 @@ export default class MapContainer extends Component {
   }
 
   createRoute(locations) {
-    const points = locations.map((location) => location.value);   
+    const addressList = locations.map((location) => location.value);   
 
-    const routePromise = this.ymaps.route(points, { 
-      multiRoute: true 
+    const multiRoute = new this.ymaps.multiRouter.MultiRoute({
+      referencePoints: addressList,
     });
-    routePromise.then(
-      (multiRoute) => {
-        this.map.geoObjects.removeAll();
-        this.map.geoObjects.add(multiRoute);
-      },
-      (err) => console.error(err),
-    );
+
+    this.map.geoObjects.removeAll();
+    this.map.geoObjects.add(multiRoute);
   }
 
   render() {
@@ -58,10 +54,6 @@ export default class MapContainer extends Component {
     }
 
     const { locations } = this.props;
-
-    if (this.map) {
-      this.map.geoObjects.removeAll();
-    }
 
     if (this.ymaps && this.locations !== 0) {
       this.createRoute(locations);
