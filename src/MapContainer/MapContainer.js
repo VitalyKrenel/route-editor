@@ -3,6 +3,10 @@ import './MapContainer.css';
 import React, { Component } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
 
+const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
+// const modules = ['geocode'];
+const mapState = { center: [55.75, 37.57], zoom: 9 };
+
 export const generateGeometry = () => {
   const [coordX, coordY] = mapState.center;  
   return [
@@ -27,9 +31,6 @@ export default class MapContainer extends Component {
   }
 
   render() {
-    const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
-    const mapState = { center: [55.75, 37.57], zoom: 9 };
-
     const { mapIsLoaded } = this.state;
 
     let mapContainer = {
