@@ -59,7 +59,11 @@ export default class MapContainer extends Component {
 
     const { locations } = this.props;
 
-    if (this.ymaps && locations.length !== 0) {
+    if (this.map) {
+      this.map.geoObjects.removeAll();
+    }
+
+    if (this.ymaps && this.locations !== 0) {
       this.createRoute(locations);
     }
 
