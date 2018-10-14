@@ -6,7 +6,12 @@ export default function PointList(props) {
   const { locations } = props;
 
   const listItems =
-    locations.map((location) => (<PointListItem location={location} key={location}/>));
+    locations.map((location) => (
+      <PointListItem 
+        location={location.value} 
+        key={location.id} 
+      />
+    ));
 
   return (
     <ul className="PointList">
