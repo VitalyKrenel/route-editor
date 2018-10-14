@@ -3,6 +3,14 @@ import './MapContainer.css';
 import React, { Component } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
 
+export const generateGeometry = () => {
+  const [coordX, coordY] = mapState.center;  
+  return [
+    coordX + Number(Math.random().toFixed(4)),
+    coordY + Number(Math.random().toFixed(4)),
+  ];
+};
+
 export default class MapContainer extends Component {
   constructor(props) {
     super(props);
