@@ -1,7 +1,7 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import MapContainer from './MapContainer/MapContainer.js';
+import MapContainer, { generateGeometry } from './MapContainer/MapContainer.js';
 import PointInput from './PointInput/PointInput.js';
 import PointList from './PointList/PointList.js';
 
@@ -26,6 +26,7 @@ class App extends Component {
     const newLocationPoint = { 
       value,
       id: generateId(),
+      geometry: generateGeometry(),
     };
     
     console.log(newLocationPoint);
@@ -40,7 +41,7 @@ class App extends Component {
           <PointInput onSubmit={this.addLocationPoint} />
           <PointList locations={this.state.locations} />
         </div>
-        <MapContainer />
+        <MapContainer placemarks={this.state.locations} />
       </main>
     );
   }

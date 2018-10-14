@@ -1,7 +1,7 @@
 import './MapContainer.css';
 
 import React, { Component } from 'react';
-import { YMaps, Map } from 'react-yandex-maps';
+import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
 const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
 // const modules = ['geocode'];
@@ -41,13 +41,26 @@ export default class MapContainer extends Component {
       mapContainer.className += ' MapContainer_status_loading';
     }
 
+    const { placemarks } = this.props; 
+
+    const placemarkComponents = placemarks.map((location) => (
+      <Placemark 
+        geometry={location.geometry}
+        key={location.id} 
+        options={{ preset: 'islands#blueCircleDotIconWithCaption'}}
+      />
+    ));
+
     return (
       <div { ...mapContainer }>
         <YMaps query={{apikey}}>
           <Map 
             className="Map"  
+            // modules={modules}  
             defaultState={mapState} 
-            onLoad={this.handleLoad}>
+            onLoad={this.handleLoad}
+          >
+            {placemarkComponents}
           </Map>
         </YMaps>
       </div>
