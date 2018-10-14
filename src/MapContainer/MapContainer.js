@@ -26,8 +26,10 @@ export default class MapContainer extends Component {
     this.handleLoad = this.handleLoad.bind(this);
   }
 
-  handleLoad() {
-    this.setState({ mapIsLoaded: true })
+  handleLoad(ymaps) {
+    this.ymaps = ymaps;
+    this.setState({ mapIsLoaded: true });
+  }
   }
 
   render() {
