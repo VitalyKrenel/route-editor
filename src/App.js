@@ -24,6 +24,7 @@ class App extends Component {
       ],
     };
     this.addLocationPoint = this.addLocationPoint.bind(this);
+    this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
   }
 
   addLocationPoint(value) {
@@ -39,12 +40,20 @@ class App extends Component {
     this.setState({ locations: locations.concat(newLocationPoint) });
   }
 
+  deleteLocationPoint(id) {
+    const locations = this.state.locations.slice(0).filter((location) => {
+      return location.id !== id; 
+    });
+    
+    this.setState({ locations });
+  }
+
   render() {
     return (
       <main className="App">
         <div className="App-Dashboard">
           <PointInput onSubmit={this.addLocationPoint} />
-          <PointList locations={this.state.locations} />
+          <PointList onDelete={this.deleteLocationPoint} locations={this.state.locations} />
         </div>
         <MapContainer locations={this.state.locations} />
       </main>
