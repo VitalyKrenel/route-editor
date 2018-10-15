@@ -1,27 +1,43 @@
 .PointList {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+
   width: 300px;
   min-height: 200px;
   margin: 0;
   padding: 0;
+}
 
-  /* background: #eee; */
+:root {
+  --dnd-width: 28px;
 }
 
 .PointList-Item {
-  margin-bottom: 20px;
+  position: relative;
+
+  width: calc(100% - var(--dnd-width));
+  margin-bottom: 15px;
+  padding: 7px 35px 8px 15px;
+}
+
+.Item-Icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--dnd-width) * -1);
+
+  display: block;
+  width: var(--dnd-width);
+
+  background: hsla(390, 88%, 66%, 1) url('Icons/drag-and-drop.svg') center/16px no-repeat;
 }
 
 .Item {
   position: relative;
   z-index: 1;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  padding: 15px 24px 15px 10px;
-
-  background: rgb(255, 251, 192);
+  background: hsla(56, 100%, 80%, 1);
 }
 
 .Item-Location {
@@ -41,28 +57,20 @@
 
 .Item-Button_action_remove {
   position: absolute;
-  top: 5px;
-  right: 3px;
-  z-index: 1;
+  top: 50%;
+  right: 5px;
 
-  width: 24px;
-  height: 24px;
+  display: block;
+  width: 25px;
+  height: 25px;
 
-  color: #ccc;
-  font-size: 20px;
-  line-height: 1;
+  background: url('Icons/cancel.svg') center/10px no-repeat;
 
-  transform: rotate(0deg);
+  transform: translate(0, -50%);
 
   transition: color 0.15s ease-in-out;
 }
 
 .Item-Button_action_remove:hover {
   color: #333;
-  /* font-weight: bold; */
 }
-
-/* .Item-Button_action_remove:hover,
-.Item-Location:hover + .Item-Button_action_remove {
-  right: -24px;
-} */

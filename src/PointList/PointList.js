@@ -26,11 +26,12 @@ export function PointListItem(props) {
 
   return (
     <li className="PointList-Item Item">
+      <div className="Item-Icon"></div>
       <div className="Item-Location">{value}</div>
       <button 
         className="Item-Button Item-Button_action_remove"
         onClick={() => props.onDelete(id)}
-      >×</button>
+      ></button>
     </li>
   ); 
 }
