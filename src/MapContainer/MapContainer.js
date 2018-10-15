@@ -25,18 +25,31 @@ export default class MapContainer extends Component {
       referencePoints: this.props.locations.map((loc) => loc.value),
     });
 
-    initialRoute.model.events.add('requestsuccess', (e) => {
-      const wayPoints = initialRoute.getWayPoints();
-      const lastIndex = wayPoints.getLength() - 1;
-      const lastPoint = wayPoints.get(lastIndex);
-      
-      const center = (lastIndex >= 0 && lastPoint.geometry.getCoordinates());
-      if (center) {
-        this.map.setCenter(center, mapDefaults.zoom, {
+    const map = this.map;
+  
+    const updateMapCenter = (e) => {
+      const { locations } = this.props;
+      const lastLocationPoint = locations[locations.length - 1];
+
+      // Note: multiRoute referencePoints is represented as unordered data
+      // structure, so to find the real last point I filter all points by
+      // location value (address) criteria 
+      const lastWayPoint = initialRoute.getWayPoints().toArray().filter(
+        (wayPoint) => {
+          return lastLocationPoint.value === wayPoint.properties.get('request');
+        }).pop();
+
+      if (lastWayPoint) {
+        // Duration param adds transition between prev and new centers
+        map.setCenter(lastWayPoint.geometry.getCoordinates(), 
+          mapDefaults.zoom, {
           duration: 500,
         });
       }
-    });
+    };
+  
+    
+    initialRoute.model.events.add('requestsuccess', updateMapCenter);
 
     this.setState({ mapIsLoaded: true });
     this.map.geoObjects.add(initialRoute);
