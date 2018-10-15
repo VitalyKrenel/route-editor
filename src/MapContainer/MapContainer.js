@@ -5,7 +5,7 @@ import { YMaps, Map } from 'react-yandex-maps';
 
 const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
 const modules = ['multiRouter.MultiRoute'];
-const mapState = { center: [55.75, 37.57], zoom: 9 };
+const mapDefaults = { center: [55.75, 37.57], zoom: 9 };
 
 export default class MapContainer extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ export default class MapContainer extends Component {
           <Map
             className="Map"
             modules={modules}  
-            defaultState={mapState} 
+            defaultState={mapDefaults}
             onLoad={this.handleLoad}
             instanceRef={ref => (this.map = ref)}
           >
