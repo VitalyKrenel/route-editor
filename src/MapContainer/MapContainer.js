@@ -7,14 +7,6 @@ const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
 const modules = ['multiRouter.MultiRoute'];
 const mapState = { center: [55.75, 37.57], zoom: 9 };
 
-export const generateGeometry = () => {
-  const [coordX, coordY] = mapState.center;  
-  return [
-    coordX + Number(Math.random().toFixed(4)),
-    coordY + Number(Math.random().toFixed(4)),
-  ];
-};
-
 export default class MapContainer extends Component {
   constructor(props) {
     super(props);

@@ -1,7 +1,7 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import MapContainer, { generateGeometry } from './MapContainer/MapContainer.js';
+import MapContainer from './MapContainer/MapContainer.js';
 import PointInput from './PointInput/PointInput.js';
 import PointList from './PointList/PointList.js';
 
@@ -32,7 +32,6 @@ class App extends Component {
     const newLocationPoint = { 
       value,
       id: generateId(),
-      geometry: generateGeometry(),
     };
     
     console.log(newLocationPoint);
