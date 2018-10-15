@@ -20,18 +20,31 @@ export default class MapContainer extends Component {
 
   handleLoad(ymaps) {
     this.ymaps = ymaps;
-    this.setState({ mapIsLoaded: true });
-  }
 
-  createRoute(locations) {
-    const addressList = locations.map((location) => location.value);   
-
-    const multiRoute = new this.ymaps.multiRouter.MultiRoute({
-      referencePoints: addressList,
+    const initialRoute = new this.ymaps.multiRouter.MultiRoute({
+      referencePoints: this.props.locations.map((loc) => loc.value),
     });
 
-    this.map.geoObjects.removeAll();
-    this.map.geoObjects.add(multiRoute);
+    initialRoute.model.events.add('requestsuccess', (e) => {
+      const wayPoints = initialRoute.getWayPoints();
+      const lastIndex = wayPoints.getLength() - 1;
+      const lastPoint = wayPoints.get(lastIndex);
+      
+      const center = (lastIndex >= 0 && lastPoint.geometry.getCoordinates());
+      if (center) {
+        this.map.setCenter(center, mapDefaults.zoom, {
+          duration: 500,
+        });
+      }
+    });
+
+    this.setState({ mapIsLoaded: true });
+    this.map.geoObjects.add(initialRoute);
+  }
+
+  updateRoute(locations) {
+    const addressList = locations.map((location) => location.value);   
+    this.map.geoObjects.get(0).model.setReferencePoints(addressList);
   }
 
   render() {
@@ -47,8 +60,8 @@ export default class MapContainer extends Component {
 
     const { locations } = this.props;
 
-    if (this.ymaps && this.locations !== 0) {
-      this.createRoute(locations);
+    if (this.ymaps) {
+      this.updateRoute(locations);
     }
 
     return (
