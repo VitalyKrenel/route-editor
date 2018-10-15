@@ -25,6 +25,7 @@ class App extends Component {
     };
     this.addLocationPoint = this.addLocationPoint.bind(this);
     this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
+    this.moveLocationPoint = this.moveLocationPoint.bind(this);
   }
 
   addLocationPoint(value) {
@@ -45,6 +46,17 @@ class App extends Component {
     });
     
     this.setState({ locations });
+  }
+
+  moveLocationPoint(from, to) {
+    const locations = this.state.locations.slice(0);
+    const extractedPoint = locations.splice(from, 1)[0];
+    locations.splice(to, 0, extractedPoint);
+
+    // console.log(locations);
+    // console.log(this.state.locations);
+
+    this.setState(state => ({ locations }));
   }
 
   render() {
