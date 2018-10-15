@@ -20,7 +20,6 @@ class App extends Component {
         { value: 'Москва, Новый Арбат', id: generateId() + 1},
         { value: 'Москва, Белорусский вокзал', id: generateId() + 2 },
         { value: 'Москва, Рижский вокзал', id: generateId() + 3 },
-
       ],
     };
     this.addLocationPoint = this.addLocationPoint.bind(this);
@@ -64,7 +63,10 @@ class App extends Component {
       <main className="App">
         <div className="App-Dashboard">
           <PointInput onSubmit={this.addLocationPoint} />
-          <PointList onDelete={this.deleteLocationPoint} locations={this.state.locations} />
+          <PointList
+            onDragEnd={this.moveLocationPoint}
+            onDelete={this.deleteLocationPoint}
+            locations={this.state.locations} />
         </div>
         <MapContainer locations={this.state.locations} />
       </main>
