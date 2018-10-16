@@ -100,6 +100,8 @@ export default class MapContainer extends Component {
       routeStrokeColor: '#a051cf',
       routeActiveStrokeColor: '#a051cf',
       routeOpacity: 1,
+      // Stop opening balloon on route click (wayPoints handled separately)
+      routeOpenBalloonOnClick: false,
     });
     
     initialRoute.model.events.add('requestsuccess', () => {      
