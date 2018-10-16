@@ -5,7 +5,13 @@ import { YMaps, Map } from 'react-yandex-maps';
 import { diffPoints } from './MapPointsUtils/MapPointsUtils.js';
 
 const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
-const modules = ['multiRouter.MultiRoute', 'geocode'];
+const modules = [
+  'multiRouter.MultiRoute',
+  'geocode',
+  'geoObject.addon.balloon',
+  'templateLayoutFactory',
+];
+
 const mapDefaults = { center: [55.75, 37.57], zoom: 12 };
 
 export default class MapContainer extends Component {
@@ -31,12 +37,12 @@ export default class MapContainer extends Component {
     }
 
     /*
-      Note: multiRoute referencePoints are stored unorderedly (my guess),
-      because the last element (returned by .get() method) doesn't match
-      last in locations array.
-      To find the real last point I filter all points by comparing 
-      last locationPoint.value (address) with all wayPoints.
-    */
+     * Note: multiRoute referencePoints are stored unorderedly (my guess),
+     * because the last element (returned by .get() method) doesn't match
+     * last in locations array.
+     * To find the real last point I filter all points by comparing 
+     * last locationPoint.value (address) with all wayPoints.
+     */
     const lastWayPoint = wayPointsArray.filter((wayPoint) => 
       lastLocPoint.value === wayPoint.properties.get('request')
     ).pop();
@@ -49,7 +55,7 @@ export default class MapContainer extends Component {
       });
     }
   }
-  
+
   /**
    * Finds location point that is out of sync with route's wayPoints on Map 
    * and calls the onWayPointDrag handler (passed through props ) with point 
@@ -102,10 +108,24 @@ export default class MapContainer extends Component {
       routeOpacity: 1,
       // Stop opening balloon on route click (wayPoints handled separately)
       routeOpenBalloonOnClick: false,
+      wayPointBalloonContentLayout: ymaps.templateLayoutFactory.createClass(
+            '{{ properties.address|raw }}'), 
     });
-    
+
     initialRoute.model.events.add('requestsuccess', () => {      
       const wayPoints = initialRoute.getWayPoints().toArray();
+      
+      /** 
+       * Note: This eliminates the neccessity of creating own balloon layout,
+       * but I didn't find a way to attach this addon directly to route, so
+       * I wouldn't have to handle this manually each time wayPoints 
+       * get updated.
+       * @see https://tech.yandex.ru/maps/doc/jsapi/2.1/ref/reference/geoObject.addon.balloon-docpage/ 
+       */
+      // Add Yandex Balloon for every wayPoint when points get updated
+      wayPoints.forEach((wayPoint) => {
+        ymaps.geoObject.addon.balloon.get(wayPoint);
+      });
 
       this.updateMapCenter(wayPoints);
       this.syncWayAndLocationPoints(wayPoints);
