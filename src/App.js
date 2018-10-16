@@ -25,7 +25,7 @@ class App extends Component {
     this.addLocationPoint = this.addLocationPoint.bind(this);
     this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
     this.moveLocationPoint = this.moveLocationPoint.bind(this);
-    this.handleWayPointDrag = this.handleWayPointDrag.bind(this);
+    this.updateLocationPoint = this.updateLocationPoint.bind(this);
   }
 
   addLocationPoint(value) {
@@ -59,7 +59,7 @@ class App extends Component {
     this.setState(state => ({ locations }));
   }
 
-  handleWayPointDrag(index, address) {
+  updateLocationPoint(index, address) {
     const locations = this.state.locations.slice(0);
     locations[index] = { value: address, id: generateId() };
 
@@ -78,7 +78,7 @@ class App extends Component {
         </div>
         <MapContainer
           locations={this.state.locations}
-          onWayPointDrag={this.handleWayPointDrag} 
+          onWayPointDrag={this.updateLocationPoint} 
         />
       </main>
     );
