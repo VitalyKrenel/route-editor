@@ -17,6 +17,66 @@ export default class MapContainer extends Component {
     };
 
     this.handleLoad = this.handleLoad.bind(this);
+    this.updateMapCenter = this.updateMapCenter.bind(this);
+    this.syncWayAndLocationPoints = this.syncWayAndLocationPoints.bind(this);
+  }
+
+  updateMapCenter(wayPointsArray) {
+    const { locations } = this.props;
+    const lastLocPoint = locations[locations.length - 1];
+    /*
+      Note: multiRoute referencePoints are stored unorderedly (my guess),
+      because the last element (returned by .get() method) doesn't match
+      last in locations array.
+      To find the real last point I filter all points by comparing 
+      last locationPoint.value (address) with all wayPoints.
+    */
+    const lastWayPoint = wayPointsArray.filter((wayPoint) => 
+      lastLocPoint.value === wayPoint.properties.get('request')
+    ).pop();
+
+    if (lastWayPoint) {
+      // Duration param adds transition between prev and new centers
+      this.map.setCenter(lastWayPoint.geometry.getCoordinates(), 
+        mapDefaults.zoom, {
+        duration: 500,
+      });
+    }
+  }
+  
+
+  /**
+   * Finds location point that is out of sync with route's wayPoints on Map 
+   * and calls the onWayPointDrag handler (passed through props ) with point 
+   * index and new address.
+   * 
+   * @param {Array} wayPointsArray 
+   */
+  syncWayAndLocationPoints(wayPointsArray) {
+    const { locations } = this.props;
+    // Note: Rename for readability
+    const { onWayPointDrag: updateLocationPoint } = this.props;
+
+    if (wayPointsArray.length === 0) {
+      return;
+    }
+
+    const locPointNeedsUpdate = diffPoints(locations, wayPointsArray);
+    if (!locPointNeedsUpdate) { 
+      return;
+    }
+    
+    const { index, coords } = locPointNeedsUpdate;
+
+    // Fetch address with geocode module because wayPoint have only coords
+    this.ymaps.geocode(coords, {
+      results: 1,
+    }).then((response) => {
+      const address = response.geoObjects.get(0).properties.get('text');
+      return address;
+    }).then((address) => {
+      updateLocationPoint(index, address);
+    });
   }
 
   handleLoad(ymaps) {
@@ -27,66 +87,13 @@ export default class MapContainer extends Component {
     }, {
       wayPointDraggable: true,
     });
-
-    const map = this.map;
-  
-    const updateMapCenter = (e) => {
-      const { locations } = this.props;
-      const lastLocationPoint = locations[locations.length - 1];
-
-      // Note: multiRoute referencePoints is represented as unordered data
-      // structure, so to find the real last point I filter all points by
-      // location value (address) criteria 
-      const lastWayPoint = initialRoute.getWayPoints().toArray().filter(
-        (wayPoint) => {
-          return lastLocationPoint.value === wayPoint.properties.get('request');
-        }).pop();
-
+    
+    initialRoute.model.events.add('requestsuccess', () => {      
       const wayPoints = initialRoute.getWayPoints().toArray();
 
-      // Note: suggested that method will be fired at least once after
-      // any point has been dragged
-      let pointNotInList;
-      locations.forEach((locPoint, index) => { 
-        const foundIndex = wayPoints.findIndex((wayPoint) => {
-          return locPoint.value === wayPoint.properties.get('request');
-        });
-
-        
-        if (foundIndex === -1) { 
-          pointNotInList = { wayPoint: wayPoints[0], locationIndex: index }; 
-          console.log(pointNotInList);
-        } else {
-          // Remove point that wasn't changed so next time less points were 
-          // searched through
-          wayPoints.splice(foundIndex, 1);
-        }
-      });
-
-      if (pointNotInList) {
-        const { wayPoint, locationIndex } = pointNotInList;
-        ymaps.geocode(wayPoint.geometry.getCoordinates(), {
-          results: 1,
-        }).then((response) => {
-          const address = response.geoObjects.get(0).properties.get('text');
-          console.log(address);
-          return address;
-        }).then((address) => {
-          this.props.onWayPointDrag(locationIndex, address);
-        });
-      }
-
-      if (lastWayPoint) {
-        // Duration param adds transition between prev and new centers
-        map.setCenter(lastWayPoint.geometry.getCoordinates(), 
-          mapDefaults.zoom, {
-          duration: 500,
-        });
-      }
-    };
-  
-    
-    initialRoute.model.events.add('requestsuccess', updateMapCenter);
+      this.updateMapCenter(wayPoints);
+      this.syncWayAndLocationPoints(wayPoints);
+    });
 
     this.setState({ mapIsLoaded: true });
     this.map.geoObjects.add(initialRoute);
