@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
 
 const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
-const modules = ['multiRouter.MultiRoute'];
+const modules = ['multiRouter.MultiRoute', 'geocode'];
 const mapDefaults = { center: [55.75, 37.57], zoom: 9 };
 
 export default class MapContainer extends Component {
@@ -40,6 +40,40 @@ export default class MapContainer extends Component {
         (wayPoint) => {
           return lastLocationPoint.value === wayPoint.properties.get('request');
         }).pop();
+
+      const wayPoints = initialRoute.getWayPoints().toArray();
+
+      // Note: suggested that method will be fired at least once after
+      // any point has been dragged
+      let pointNotInList;
+      locations.forEach((locPoint, index) => { 
+        const foundIndex = wayPoints.findIndex((wayPoint) => {
+          return locPoint.value === wayPoint.properties.get('request');
+        });
+
+        
+        if (foundIndex === -1) { 
+          pointNotInList = { wayPoint: wayPoints[0], locationIndex: index }; 
+          console.log(pointNotInList);
+        } else {
+          // Remove point that wasn't changed so next time less points were 
+          // searched through
+          wayPoints.splice(foundIndex, 1);
+        }
+      });
+
+      if (pointNotInList) {
+        const { wayPoint, locationIndex } = pointNotInList;
+        ymaps.geocode(wayPoint.geometry.getCoordinates(), {
+          results: 1,
+        }).then((response) => {
+          const address = response.geoObjects.get(0).properties.get('text');
+          console.log(address);
+          return address;
+        }).then((address) => {
+          this.props.onWayPointDrag(locationIndex, address);
+        });
+      }
 
       if (lastWayPoint) {
         // Duration param adds transition between prev and new centers
