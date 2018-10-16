@@ -21,8 +21,10 @@ export default class MapContainer extends Component {
   handleLoad(ymaps) {
     this.ymaps = ymaps;
 
-    const initialRoute = new this.ymaps.multiRouter.MultiRoute({
+    const initialRoute = new ymaps.multiRouter.MultiRoute({
       referencePoints: this.props.locations.map((loc) => loc.value),
+    }, {
+      wayPointDraggable: true,
     });
 
     const map = this.map;
