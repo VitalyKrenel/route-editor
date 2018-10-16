@@ -50,7 +50,6 @@ export default class MapContainer extends Component {
     }
   }
   
-
   /**
    * Finds location point that is out of sync with route's wayPoints on Map 
    * and calls the onWayPointDrag handler (passed through props ) with point 
@@ -90,6 +89,10 @@ export default class MapContainer extends Component {
 
     const initialRoute = new ymaps.multiRouter.MultiRoute({
       referencePoints: this.props.locations.map((loc) => loc.value),
+      params: {
+        // Limit routes number to 1, otherwise additional routes are shown
+        results: 1,
+      }
     }, {
       wayPointDraggable: true,
       preventDragUpdate: true,
