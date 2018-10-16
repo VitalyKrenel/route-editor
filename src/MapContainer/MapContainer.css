@@ -1,6 +1,6 @@
 :root {
-  --map-width: 600px;
-  --map-height: 600px;
+  --Map-width: 600px;
+  --Map-height: 600px;
 }
 
 .MapContainer {
@@ -9,8 +9,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--map-width);
-  height: var(--map-height);
+
+  /*
+   * Note: Container sizing required to allow centered loader spinner to be
+   * shown while Map is still loading.
+   */
+  width: var(--Map-width);
+  height: var(--Map-height);
 
   background: #eee;
 }
@@ -33,8 +38,8 @@
 }
 
 .Map {
-  width: var(--map-width);
-  height: var(--map-height);
+  width: var(--Map-width);
+  height: var(--Map-height);
 }
 
 @keyframes spin {
