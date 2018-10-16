@@ -2,6 +2,7 @@ import './MapContainer.css';
 
 import React, { Component } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
+import { diffPoints } from './MapPointsUtils/MapPointsUtils.js';
 
 const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
 const modules = ['multiRouter.MultiRoute', 'geocode'];
