@@ -24,6 +24,12 @@ export default class MapContainer extends Component {
   updateMapCenter(wayPointsArray) {
     const { locations } = this.props;
     const lastLocPoint = locations[locations.length - 1];
+    
+    // Note: For the case when API has loaded but no location points avaliable
+    if (lastLocPoint === undefined) {
+      return;
+    }
+
     /*
       Note: multiRoute referencePoints are stored unorderedly (my guess),
       because the last element (returned by .get() method) doesn't match
