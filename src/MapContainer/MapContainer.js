@@ -86,6 +86,7 @@ export default class MapContainer extends Component {
       referencePoints: this.props.locations.map((loc) => loc.value),
     }, {
       wayPointDraggable: true,
+      preventDragUpdate: true,
     });
     
     initialRoute.model.events.add('requestsuccess', () => {      
