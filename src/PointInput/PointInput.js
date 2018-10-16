@@ -1,3 +1,5 @@
+import './PointInput.css';
+
 import React, { Component } from 'react';
 
 export default class PointInput extends Component {
@@ -26,7 +28,7 @@ export default class PointInput extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input className="App-Input" type="text" value={this.state.value} onChange={this.handleChange} placeholder="Введите адрес..." />
+        <input className="PointInput" type="text" value={this.state.value} onChange={this.handleChange} placeholder="Введите адрес..." />
       </form>
     );
   }
