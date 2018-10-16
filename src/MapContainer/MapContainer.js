@@ -96,6 +96,10 @@ export default class MapContainer extends Component {
     }, {
       wayPointDraggable: true,
       preventDragUpdate: true,
+      // Force route to keep the same color even when being inactive
+      routeStrokeColor: '#a051cf',
+      routeActiveStrokeColor: '#a051cf',
+      routeOpacity: 1,
     });
     
     initialRoute.model.events.add('requestsuccess', () => {      
