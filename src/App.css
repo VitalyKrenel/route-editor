@@ -1,38 +1,39 @@
 :root {
-  --App-paddig-top: 50px;
-  --App-margin-bottom: 50px;
-  --PointInputWrapper-margin-bot: 30px;
+  --App-gap-vertical: 50px;
 }
 
 .App {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  margin-bottom: --App-margin-bottom;
-  padding-top: var(--App-paddig-top);
+  align-items: stretch;
+  height: calc(100vh - var(--App-gap-vertical) * 2);
+  margin: var(--App-gap-vertical) 0;
 
   background: #fff;
 }
 
 .App-Dashboard {
+  display: flex;
+  flex-direction: column;
+
   margin-right: 30px;
 }
 
 .App-PointList {
-  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom) - var(--PointInputWrapper-margin-bot) - var(--PointInput-height));
+  flex: 1;
   margin: 0;
 }
 
 .App-Map {
-  width: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
-  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
+  width: 100%;
+  height: 100%;
 }
 
 .App-MapContainer {
-  width: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
-  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
+  max-width: 600px;
+  max-height: 600px;
 }
 
 .App-PointInputWrapper {
-  margin-bottom: var(--PointInputWrapper-margin-bot);
+  margin-bottom: 30px;
 }
