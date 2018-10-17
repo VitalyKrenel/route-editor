@@ -23,6 +23,16 @@
   margin: 0;
 }
 
+.App-Map {
+  width: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
+  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
+}
+
+.App-MapContainer {
+  width: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
+  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom));
+}
+
 .App-PointInputWrapper {
   margin-bottom: var(--PointInputWrapper-margin-bot);
 }

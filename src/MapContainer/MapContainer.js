@@ -151,10 +151,10 @@ export default class MapContainer extends Component {
     }
 
     return (
-      <div className={"MapContainer" + loadingStatus}>
+      <div className={"MapContainer App-MapContainer" + loadingStatus}>
         <YMaps query={{apikey}}>
           <Map
-            className="Map"
+            className="Map App-Map"
             modules={modules}  
             defaultState={mapDefaults}
             onLoad={this.handleLoad}
