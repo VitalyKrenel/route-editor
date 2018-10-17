@@ -142,14 +142,7 @@ export default class MapContainer extends Component {
 
   render() {
     const { mapIsLoaded } = this.state;
-
-    let mapContainer = {
-      className: 'MapContainer',
-    };
-
-    if (!mapIsLoaded) {
-      mapContainer.className += ' MapContainer_status_loading';
-    }
+    const loadingStatus = mapIsLoaded ? '' : ' MapContainer_status_loading';
 
     const { locations } = this.props;
 
@@ -158,7 +151,7 @@ export default class MapContainer extends Component {
     }
 
     return (
-      <div { ...mapContainer }>
+      <div className={"MapContainer" + loadingStatus}>
         <YMaps query={{apikey}}>
           <Map
             className="Map"
