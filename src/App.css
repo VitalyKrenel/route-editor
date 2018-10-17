@@ -1,6 +1,7 @@
 :root {
   --App-paddig-top: 50px;
   --App-margin-bottom: 50px;
+  --PointInputWrapper-margin-bot: 30px;
 }
 
 .App {
