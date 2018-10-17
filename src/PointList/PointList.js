@@ -35,7 +35,7 @@ export default function PointList(props) {
       <Droppable droppableId="PointList-1">
         {(provided) => (
           <ul 
-            className="App-PointList PointList"
+            className="PointList App-PointList"
             ref={provided.innerRef} 
             {...provided.droppableProps}
           >
@@ -55,7 +55,7 @@ export function PointListItem(props) {
     <Draggable draggableId={id} index={props.index}>
       {(provided) => (
         <li
-          className="PointList-Item Item" 
+          className="Item PointList-Item" 
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
