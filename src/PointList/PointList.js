@@ -35,7 +35,7 @@ export default function PointList(props) {
       <Droppable droppableId="PointList-1">
         {(provided) => (
           <ul 
-            className="PointList"
+            className="App-PointList PointList"
             ref={provided.innerRef} 
             {...provided.droppableProps}
           >
