@@ -4,9 +4,12 @@
   align-items: flex-end;
 
   width: 300px;
+  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom) - var(--PointInputWrapper-margin-bot) - var(--PointInput-height));
+
   min-height: 200px;
-  margin: 0;
-  padding: 0;
+  padding: 0 0 0;
+
+  overflow-y: auto;
 
   list-style: none;
 }
@@ -16,11 +19,17 @@
 }
 
 .PointList-Item {
+  --margin-right: 10px;
   position: relative;
 
-  width: calc(100% - var(--dnd-width));
+  width: calc(100% - var(--dnd-width) - var(--margin-right));
+  margin-right: var(--margin-right);
   margin-bottom: 15px;
   padding: 7px 35px 8px 15px;
+}
+
+.PointList-Item:last-of-type {
+  margin-bottom: 0;
 }
 
 .Item-Icon {
