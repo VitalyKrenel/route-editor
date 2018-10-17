@@ -4,8 +4,6 @@
   align-items: flex-end;
 
   width: 300px;
-  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom) - var(--PointInputWrapper-margin-bot) - var(--PointInput-height));
-
   min-height: 200px;
   padding: 0 0 0;
 

@@ -19,6 +19,7 @@
 }
 
 .App-PointList {
+  height: calc(100vh - var(--App-paddig-top) - var(--App-margin-bottom) - var(--PointInputWrapper-margin-bot) - var(--PointInput-height));
   margin: 0;
 }
 
