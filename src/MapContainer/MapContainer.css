@@ -10,14 +10,16 @@
   justify-content: center;
   align-items: center;
 
+  background: #eee;
+}
+
+.MapContainer_size_md {
   /*
    * Note: Container sizing required to allow centered loader spinner to be
    * shown while Map is still loading.
    */
   width: var(--Map-width);
   height: var(--Map-height);
-
-  background: #eee;
 }
 
 .MapContainer_status_loading::after {
