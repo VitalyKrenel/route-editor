@@ -10,3 +10,11 @@
 .App-Dashboard {
   margin-right: 30px;
 }
+
+.App-PointList {
+  margin: 0;
+}
+
+.App-PointInputWrapper {
+  margin-bottom: var(--PointInputWrapper-margin-bot);
+}
