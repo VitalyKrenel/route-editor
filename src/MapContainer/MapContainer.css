@@ -22,6 +22,11 @@
   height: var(--Map-height);
 }
 
+.MapContainer_size_fluid {
+  width: 100%;
+  height: 100%;
+}
+
 .MapContainer_status_loading::after {
   position: absolute;
 
