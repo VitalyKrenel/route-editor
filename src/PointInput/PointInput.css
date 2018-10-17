@@ -1,6 +1,10 @@
+:root {
+  --PointInput-height: 36px;
+}
+
 .PointInput {
   width: 300px;
-  height: 36px;
+  height: var(--PointInput-height);
   padding: 10px 5px;
 
   font-size: 16px;
