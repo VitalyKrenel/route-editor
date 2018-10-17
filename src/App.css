@@ -1,8 +1,14 @@
+:root {
+  --App-paddig-top: 50px;
+  --App-margin-bottom: 50px;
+}
+
 .App {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 50px;
+  margin-bottom: --App-margin-bottom;
+  padding-top: var(--App-paddig-top);
 
   background: #fff;
 }
