@@ -1,9 +1,9 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import MapContainer from './MapContainer/MapContainer.js';
-import PointInput from './PointInput/PointInput.js';
-import PointList from './PointList/PointList.js';
+import MapContainer from './Components/MapContainer/MapContainer.js';
+import PointInput from './Components/PointInput/PointInput.js';
+import PointList from './Components/PointList/PointList.js';
 
 const generateId = () => {
   // Note: Keys are not determenistic and are calculated at the rendering time
