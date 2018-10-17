@@ -22,4 +22,10 @@ describe('moveLocationPoint()', () => {
     expect(moveLocationPoint(locations, 1, 2)).toEqual(expected);
   });
 
+  it('should return an empty array when locations array is empty', () => {
+    const locations = [];
+    const expected = [];
+
+    expect(moveLocationPoint(locations, 1, 3)).toEqual(expected);
+  });
 });

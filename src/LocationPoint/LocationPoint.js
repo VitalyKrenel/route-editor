@@ -47,6 +47,10 @@ export function deleteLocationPoint(locations, id) {
  * @returns {Array.<LocationPoint>}
  */
 export function moveLocationPoint(locations, fromPosition, toPosition) {
+  if(!Array.isArray(locations) || locations.length === 0) {
+    return [];
+  }
+  
   const locs = locations.slice(0);
   const extractedPoint = locs.splice(fromPosition, 1)[0];
   locs.splice(toPosition, 0, extractedPoint);
