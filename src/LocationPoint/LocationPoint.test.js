@@ -1,4 +1,4 @@
-import { updateLocationPoint, moveLocationPoint } from './LocationPoint.js';
+import { updateLocationPoint, moveLocationPoint, addLocationPoint } from './LocationPoint.js';
 
 const getStubLocations = () => {
   return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
@@ -8,6 +8,16 @@ let locations;
 
 beforeEach(() => {
   locations = getStubLocations();
+});
+
+describe('addLocationPoint()', () => {
+  it('should return an array with added new LocationPoint', () => {
+    const expected = getStubLocations();
+    const address = 'Москва, Новый Арбат';
+    expected.push({ id: expected.length, value: address });
+
+    expect(addLocationPoint(locations, address)).toEqual(expected);
+  });
 });
 
 describe('updateLocationPoint()', () => {

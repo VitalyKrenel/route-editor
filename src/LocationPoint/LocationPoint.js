@@ -15,7 +15,7 @@
 export function addLocationPoint(locations, address) {
   return locations.concat([{
     value: address,
-    id: locations.length + 1,
+    id: locations.length,
   }]);
 };
 
