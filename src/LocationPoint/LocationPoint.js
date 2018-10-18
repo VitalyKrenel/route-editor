@@ -51,6 +51,14 @@ export function moveLocationPoint(locations, fromPosition, toPosition) {
     return [];
   }
   
+  if (fromPosition < 0 || fromPosition >= locations.length) {
+    throw new Error('RangeError: Trying to access the fromPosition being out of the locations array range');
+  }
+
+  if (toPosition < 0 || toPosition >= locations.length) {
+    throw new Error('RangeError: Trying to access the toPosition being out of the locations array range');
+  }
+
   const locs = locations.slice(0);
   const extractedPoint = locs.splice(fromPosition, 1)[0];
   locs.splice(toPosition, 0, extractedPoint);

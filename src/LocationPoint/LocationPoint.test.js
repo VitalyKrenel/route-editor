@@ -28,4 +28,17 @@ describe('moveLocationPoint()', () => {
 
     expect(moveLocationPoint(locations, 1, 3)).toEqual(expected);
   });
+
+  it('should throw an error when first position is out of the locations length', () => {
+    expect(() => {
+      moveLocationPoint(locations, 0, 10);
+    }).toThrow();
+  });
+
+  it('should throw an error when the second position is out of the locations length', () => {
+    expect(() => {
+      moveLocationPoint(locations, 10, 3);
+    }).toThrow();
+  });
+  
 });
