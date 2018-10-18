@@ -1,9 +1,16 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import MapContainer from './MapContainer/MapContainer.js';
-import PointInput from './PointInput/PointInput.js';
-import PointList from './PointList/PointList.js';
+import MapContainer from './Components/MapContainer/MapContainer.js';
+import PointInput from './Components/PointInput/PointInput.js';
+import PointList from './Components/PointList/PointList.js';
+
+import {
+  addLocationPoint,
+  deleteLocationPoint,
+  moveLocationPoint,
+  updateLocationPoint,
+} from './LocationPoint/LocationPoint.js';
 
 const generateId = () => {
   // Note: Keys are not determenistic and are calculated at the rendering time
@@ -17,11 +24,12 @@ class App extends Component {
 
     this.state = {
       locations: [
-        { value: 'Москва, Новый Арбат', id: generateId() + 1},
-        { value: 'Москва, Белорусский вокзал', id: generateId() + 2 },
-        { value: 'Москва, Рижский вокзал', id: generateId() + 3 },
+        { value: 'Москва, Новый Арбат', id: 0 },
+        { value: 'Москва, Белорусский вокзал', id: 1 },
+        { value: 'Москва, Рижский вокзал', id: 2 },
       ],
     };
+
     this.addLocationPoint = this.addLocationPoint.bind(this);
     this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
     this.moveLocationPoint = this.moveLocationPoint.bind(this);
@@ -29,41 +37,27 @@ class App extends Component {
   }
 
   addLocationPoint(value) {
-    const locations = this.state.locations.slice(0);
-    const newLocationPoint = { 
-      value,
-      id: generateId(),
-    };
-    
-    console.log(newLocationPoint);
-    
-    this.setState({ locations: locations.concat(newLocationPoint) });
+    this.setState((state) => ({
+      locations: addLocationPoint(state.locations, value),
+    }));
   }
 
   deleteLocationPoint(id) {
-    const locations = this.state.locations.slice(0).filter((location) => {
-      return location.id !== id; 
-    });
-    
-    this.setState({ locations });
+    this.setState((state) => ({
+      locations: deleteLocationPoint(state.locations, id),
+    }));
   }
 
   moveLocationPoint(from, to) {
-    const locations = this.state.locations.slice(0);
-    const extractedPoint = locations.splice(from, 1)[0];
-    locations.splice(to, 0, extractedPoint);
-
-    // console.log(locations);
-    // console.log(this.state.locations);
-
-    this.setState(state => ({ locations }));
+    this.setState((state) => ({
+      locations: moveLocationPoint(state.locations, from, to),
+    }));
   }
 
   updateLocationPoint(index, address) {
-    const locations = this.state.locations.slice(0);
-    locations[index] = { value: address, id: generateId() };
-
-    this.setState(state => ({ locations }));
+    this.setState((state) => ({
+      locations: updateLocationPoint(state.locations, index, address),
+    }));
   }
 
   render() {
