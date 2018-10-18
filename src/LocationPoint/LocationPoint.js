@@ -47,9 +47,6 @@ export function deleteLocationPoint(locations, id) {
  * @returns {Array.<LocationPoint>}
  */
 export function moveLocationPoint(locations, fromPosition, toPosition) {
-  if(!Array.isArray(locations) || locations.length === 0) {
-    return [];
-  }
   
   if (fromPosition < 0 || fromPosition >= locations.length) {
     throw new Error('RangeError: Trying to access the fromPosition being out of the locations array range');
