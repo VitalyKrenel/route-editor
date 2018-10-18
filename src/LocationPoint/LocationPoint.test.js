@@ -1,14 +1,40 @@
-import { moveLocationPoint } from './LocationPoint.js';
+import { updateLocationPoint, moveLocationPoint } from './LocationPoint.js';
 
 const getStubLocations = () => {
   return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
 };
 
-  let locations;
+let locations;
 
-  beforeEach(() => {
-    locations = getStubLocations();
+beforeEach(() => {
+  locations = getStubLocations();
+});
+
+describe('updateLocationPoint()', () => {
+  it('should throw an error when accessed index is out of array range', () => {
+    const locations = [];
+    const index = 10;
+    const address = 'Москва, Новый Арбат';
+
+    expect(() => {
+      updateLocationPoint(locations, index, address);
+    }).toThrow();
   });
+
+  it('should return an array with updated locationPoint', () => {
+    const index = 2;
+    const address = 'Москва, Новый Арбат';
+    const expected = getStubLocations();
+    expected[2] = { id: 2, value: address };
+
+    expect(updateLocationPoint(locations, index, address)).toEqual(expected);
+  });
+
+  it('should not mutate the provided locations array', () => {
+    updateLocationPoint(locations, 0, '');
+    expect(locations).toEqual(locations);
+  });
+});
 
 describe('moveLocationPoint()', () => {
   it('should move point from position 0 to 3', () => {

@@ -75,6 +75,10 @@ export function moveLocationPoint(locations, fromPosition, toPosition) {
  * @returns {Array.<LocationPoint>}
  */
 export function updateLocationPoint(locations, index, address) {
+  if (index < 0 || index >= locations.length) {
+    throw new Error(`RangeError: Trying to access element being out of the locations array range`);
+  }
+
   const locs = locations.slice(0);
   const { id } = locs[index];
 
