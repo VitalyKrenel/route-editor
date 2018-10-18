@@ -18,6 +18,30 @@ describe('addLocationPoint()', () => {
 
     expect(addLocationPoint(locations, address)).toEqual(expected);
   });
+
+  it('expect added locationPoint to have the provided address', () => {
+    const expected = getStubLocations();
+    const address = 'Москва, Новый Арбат';
+    expected.push({ id: expected.length, value: address });
+
+    const result = addLocationPoint(locations, address);
+    
+    expect(result.pop().value).toEqual(expected.pop().value);
+  });
+
+  it('should throw an Error if address arg is undefined', () => {
+    expect(() => {
+      addLocationPoint(locations, undefined);
+    }).toThrow();
+  });
+
+  it('should not mutate the provided locations array', () => {
+    const address = 'Москва, ВДНХ';
+
+    addLocationPoint(locations, address);
+    expect(locations).toEqual(locations);
+  });
+
 });
 
 describe('updateLocationPoint()', () => {

@@ -13,6 +13,10 @@
  * @returns {Array.<LocationPoint>} Returns new array containing created point
  */
 export function addLocationPoint(locations, address) {
+  if (address === undefined) {
+    throw new Error('MissingArgumentError: Provided address argument is undefined');
+  }
+
   return locations.concat([{
     value: address,
     id: locations.length,
