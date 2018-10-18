@@ -35,4 +35,8 @@ describe('moveLocationPoint()', () => {
     }).toThrow();
   });
   
+  it('should not mutate the provided locations array', () => {
+    moveLocationPoint(locations, 0, 1);
+    expect(locations).toEqual(locations);
+  });
 });
