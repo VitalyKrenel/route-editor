@@ -33,6 +33,10 @@ export function addLocationPoint(locations, address) {
  * @returns {Array.<LocationPoint>} a new locations array
  */
 export function deleteLocationPoint(locations, id) {
+  if (id === undefined) {
+    throw new Error('MissingArgument: Expected to get id as the second argument, but undefined encountered');
+  }
+
   return locations.filter((location) => {
     return location.id !== id; 
   });

@@ -1,4 +1,4 @@
-import { updateLocationPoint, moveLocationPoint, addLocationPoint } from './LocationPoint.js';
+import { updateLocationPoint, moveLocationPoint, addLocationPoint, deleteLocationPoint } from './LocationPoint.js';
 
 const getStubLocations = () => {
   return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
@@ -41,7 +41,31 @@ describe('addLocationPoint()', () => {
     addLocationPoint(locations, address);
     expect(locations).toEqual(locations);
   });
+});
 
+describe('deleteLocationPoint()', () => {
+  it('should delete the point with the specified id', () => {
+    const id = 1;
+    const expected = getStubLocations().filter((locPoint) => {
+      return locPoint.id !== id;
+    });
+
+    expect(deleteLocationPoint(locations, id)).toEqual(expected);
+  });
+
+  it('should throw an error when id is undefined', () => {
+    expect(() => {
+      deleteLocationPoint(locations, undefined)
+    }).toThrow();
+  });
+
+  it('should not mutate the provided locations array', () => {
+    const id = 1;
+
+    deleteLocationPoint(locations, id);
+
+    expect(locations).toEqual(locations);
+  });
 });
 
 describe('updateLocationPoint()', () => {
