@@ -10,6 +10,42 @@ beforeEach(() => {
   locations = getStubLocations();
 });
 
+describe('createLocationPoint()', () => {
+  let createLocationPoint;
+
+  beforeEach(() => {
+    createLocationPoint = makeLocationPointFactory();
+  });
+
+  it('should return a location point with the provided address in value property', () => {
+    const address = 'Москва, станция метро Китай-город';
+
+    expect(createLocationPoint(address).value).toEqual(address);
+  });   
+
+  it('should return a location point with id = 0', () => {
+    const address = 'Москва, станция метро Китай-город';
+
+    expect(createLocationPoint(address).id).toEqual(0);    
+  });
+
+  it('should return a location point with id = 3', () => {
+    const address = 'Москва, станция метро Китай-город';
+    createLocationPoint(address);
+    createLocationPoint(address);
+    createLocationPoint(address);
+
+    expect(createLocationPoint(address).id).toEqual(3);
+  });
+
+  it('should throw an error if address arg is undefined', () => {
+    expect(() => {
+      createLocationPoint(undefined);
+    }).toThrow();
+  });
+});
+
+
 describe('addLocationPoint()', () => {
   it('should return an array with added new LocationPoint', () => {
     const expected = getStubLocations();

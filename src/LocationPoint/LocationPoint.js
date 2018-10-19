@@ -4,6 +4,39 @@
  * @property {string} value - Human readable address of the point
  */
 
+
+/**
+ * Cretes a factory for creating LocationPoints with automatic id increment.
+ * 
+ * @param {number} initialId - start incrementing id from
+ * @returns {function}
+ */
+export const makeLocationPointFactory = ((initialId = 0) => {
+  let id = initialId;
+
+  /**
+   * LocationPoint object (plain object) with the provided address,
+   * and calculated id.
+   * 
+   * @param {string} address
+   * @returns {LocationPoint}
+   */
+  return function createLocationPoint(address) {
+    if (address === undefined) {
+      throw new Error('MisiingArgument: Expected to get an address arg, but undefined encountered');
+    }
+
+    const locationPoint = {
+      id,
+      value: address,
+    };
+
+    id = id + 1;
+
+    return locationPoint;
+  };
+});
+
 /**
  * Create a LocationPoint with a provided address and add it to a copy of
  * locations array. The method does not mutate the data.
