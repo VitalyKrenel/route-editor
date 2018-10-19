@@ -1,4 +1,4 @@
-import { updateLocationPoint, moveLocationPoint, addLocationPoint, deleteLocationPoint } from './LocationPoint.js';
+import { updateLocationPoint, moveLocationPoint, addLocationPoint, deleteLocationPoint, createLocationPoint, makeLocationPointFactory } from './LocationPoint.js';
 
 const getStubLocations = () => {
   return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
@@ -50,31 +50,45 @@ describe('addLocationPoint()', () => {
   it('should return an array with added new LocationPoint', () => {
     const expected = getStubLocations();
     const address = 'Москва, Новый Арбат';
-    expected.push({ id: expected.length, value: address });
+    const locPoint = { id: expected.length, value: address };
+    expected.push(locPoint);
 
-    expect(addLocationPoint(locations, address)).toEqual(expected);
+    expect(addLocationPoint(locations, locPoint)).toEqual(expected);
   });
 
   it('expect added locationPoint to have the provided address', () => {
     const expected = getStubLocations();
     const address = 'Москва, Новый Арбат';
-    expected.push({ id: expected.length, value: address });
+    const locPoint = { id: expected.length, value: address };
+    expected.push(locPoint);
 
-    const result = addLocationPoint(locations, address);
+    const result = addLocationPoint(locations, locPoint);
     
     expect(result.pop().value).toEqual(expected.pop().value);
   });
 
-  it('should throw an Error if address arg is undefined', () => {
+  it('should throw an Error if location point arg is undefined', () => {
     expect(() => {
       addLocationPoint(locations, undefined);
+    }).toThrow();
+  });
+
+  it('should throw an Error if the value property of location point is undefined', () => {
+    expect(() => {
+      addLocationPoint(locations, { id: 0 });
+    }).toThrow();
+  });
+
+  it('should throw an Error if the id property of location point is undefined', () => {
+    expect(() => {
+      addLocationPoint(locations, { value: 'Москва, Красная площадь' });
     }).toThrow();
   });
 
   it('should not mutate the provided locations array', () => {
     const address = 'Москва, ВДНХ';
 
-    addLocationPoint(locations, address);
+    addLocationPoint(locations, { id: 0, value: address });
     expect(locations).toEqual(locations);
   });
 });

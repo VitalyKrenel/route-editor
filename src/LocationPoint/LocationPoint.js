@@ -42,18 +42,15 @@ export const makeLocationPointFactory = ((initialId = 0) => {
  * locations array. The method does not mutate the data.
  *
  * @param {Array.<LocationPoint>} locations
- * @param {string} address
+ * @param {LocationPoint} loactionPoint
  * @returns {Array.<LocationPoint>} Returns new array containing created point
  */
-export function addLocationPoint(locations, address) {
-  if (address === undefined) {
-    throw new Error('MissingArgumentError: Provided address argument is undefined');
+export function addLocationPoint(locations, locationPoint) {
+  if (locationPoint.value === undefined || locationPoint.id === undefined) {
+    throw new Error('InvalidArgument: provided object does not match the location point signature');
   }
 
-  return locations.concat([{
-    value: address,
-    id: locations.length,
-  }]);
+  return locations.concat([locationPoint]);
 };
 
 /**
