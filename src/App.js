@@ -10,7 +10,10 @@ import {
   deleteLocationPoint,
   moveLocationPoint,
   updateLocationPoint,
+  makeLocationPointFactory,
 } from './LocationPoint/LocationPoint.js';
+
+const createLocationPoint = makeLocationPointFactory();
 
 const generateId = () => {
   // Note: Keys are not determenistic and are calculated at the rendering time
@@ -24,9 +27,9 @@ class App extends Component {
 
     this.state = {
       locations: [
-        { value: 'Москва, Новый Арбат', id: 0 },
-        { value: 'Москва, Белорусский вокзал', id: 1 },
-        { value: 'Москва, Рижский вокзал', id: 2 },
+        createLocationPoint('Москва, Новый Арбат'),
+        createLocationPoint('Москва, Белорусский вокзал'),
+        createLocationPoint('Москва, Рижский вокзал'),
       ],
     };
 
@@ -37,8 +40,10 @@ class App extends Component {
   }
 
   addLocationPoint(value) {
+    const locationPoint = createLocationPoint(value);
+
     this.setState((state) => ({
-      locations: addLocationPoint(state.locations, value),
+      locations: addLocationPoint(state.locations, locationPoint),
     }));
   }
 
