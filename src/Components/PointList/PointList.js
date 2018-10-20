@@ -5,10 +5,42 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // PointList component is built with react-beautiful-dnd
 // @see https://github.com/atlassian/react-beautiful-dnd
-export default function PointList(props) {
-  const { locations, onDelete } = props;
+export class PointList extends React.Component {
+  render() {
+    const { locations, onDelete } = this.props;
+    // Props provided from Draggable
+    const { provided, innerRef} = this.props;
+    const { droppableProps, placeholder } = provided;
 
-  const onDragEnd = (result) => {
+    const listItems =
+      locations.map((location, index) => (
+        <PointListItem
+          location={location}
+          onDelete={onDelete}
+          key={location.id}
+          index={index}
+        />
+      ));
+
+    // Note: If PointList is wrapped in Droppable then it will be a drop place,
+    // otherwise it will be an normal list with items. 
+    return (
+      <ul
+        className="PointList"
+        ref={innerRef}
+        { ...droppableProps }
+      >
+        {listItems}
+        {placeholder}
+      </ul>
+    );
+  }
+}
+
+export function DraggablePointList(props) {
+  const { onDragEnd, ...rest } = props;
+
+  const handleDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
@@ -16,32 +48,18 @@ export default function PointList(props) {
     const sourceIndex = result.source.index;
     const destIndex = result.destination.index;
 
-    props.onDragEnd(sourceIndex, destIndex);
+    onDragEnd(sourceIndex, destIndex);
   };
-
-  const listItems =
-    locations.map((location, index) => (
-      <PointListItem
-        location={location}
-        onDelete={onDelete}
-        key={location.id}
-        index={index}
-      />
-    ));
-
-  // TODO: Add droppableId auto generation
+  
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="PointList-1">
-        {(provided) => (
-          <ul 
-            className="PointList"
-            ref={provided.innerRef} 
-            {...provided.droppableProps}
-          >
-            {listItems}
-            {provided.placeholder}
-          </ul>
+        {provided => (
+          <PointList
+            provided={provided}
+            innerRef={provided.innerRef}
+            { ...rest }
+          />
         )}
       </Droppable>
     </DragDropContext>
