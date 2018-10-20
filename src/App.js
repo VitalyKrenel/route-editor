@@ -3,7 +3,7 @@ import './App.css';
 import React, { Component } from 'react';
 import MapContainer from './Components/MapContainer/MapContainer.js';
 import PointInput from './Components/PointInput/PointInput.js';
-import PointList from './Components/PointList/PointList.js';
+import { DraggablePointList } from './Components/PointList/PointList.js';
 
 import {
   addLocationPoint,
@@ -70,7 +70,7 @@ class App extends Component {
       <main className="App">
         <div className="App-Dashboard">
           <PointInput onSubmit={this.addLocationPoint} />
-          <PointList
+          <DraggablePointList
             onDragEnd={this.moveLocationPoint}
             onDelete={this.deleteLocationPoint}
             locations={this.state.locations} />
