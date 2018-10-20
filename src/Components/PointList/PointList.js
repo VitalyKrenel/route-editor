@@ -10,18 +10,20 @@ export class PointList extends React.Component {
     const { locations, onDelete } = this.props;
     // Props provided from Draggable
     const { provided, innerRef} = this.props;
-    const { droppableProps, placeholder } = provided;
+    const { droppableProps } = provided;
+
+    const Item = provided ? DraggablePointListItem : PointListItem;
 
     const listItems =
       locations.map((location, index) => (
-        <PointListItem
+        <Item
           location={location}
           onDelete={onDelete}
+          id={location.id}
           key={location.id}
           index={index}
         />
       ));
-
     // Note: If PointList is wrapped in Droppable then it will be a drop place,
     // otherwise it will be an normal list with items. 
     return (
@@ -31,7 +33,7 @@ export class PointList extends React.Component {
         { ...droppableProps }
       >
         {listItems}
-        {placeholder}
+        {provided.placeholder}
       </ul>
     );
   }
@@ -66,28 +68,41 @@ export function DraggablePointList(props) {
   );
 }
 
-export function PointListItem(props) {
-  const { value, id } = props.location;
+export class PointListItem extends React.Component {
+  render() {
+    const { location, onDelete } = this.props;
+    const { provided, innerRef } = this.props;
+    
+    const { draggableProps, dragHandleProps } = provided;
 
-  return (
-    <Draggable draggableId={id} index={props.index}>
-      {(provided) => (
-        <li
-          className="PointList-Item Item" 
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-        >
-          <div 
-            className="Item-Icon" 
-            {...provided.dragHandleProps}
-          ></div>
-          <div className="Item-Location">{value}</div>
-          <button 
-            className="Item-Button Item-Button_action_remove"
-            onClick={() => props.onDelete(id)}
-          ></button>
-        </li>
-      )}
-    </Draggable>
-  ); 
+    return (
+      <li
+        className="PointList-Item Item" 
+        {...draggableProps}
+        ref={innerRef}
+      >
+        <div
+          className="Item-Icon" 
+          {...dragHandleProps}
+        ></div>
+        <div className="Item-Location">{location.value}</div>
+        <button
+          className="Item-Button Item-Button_action_remove"
+          onClick={() => onDelete(location.id)}
+        ></button>
+      </li>
+    );
+  }
+}
+
+function DraggablePointListItem(props) {
+    const { id, index, ...rest } = props;
+
+    return (
+      <Draggable draggableId={id} index={index}>
+        {(provided) => (
+          <PointListItem provided={provided} placeholder={provided.placeholder} innerRef={provided.innerRef} {...rest} />
+        )}
+      </Draggable>
+    );
 }
