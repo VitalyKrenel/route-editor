@@ -53,4 +53,25 @@ describe('<PointList />', () => {
 
     expect(handleDelete).toHaveBeenCalled();
   });
+
+  it('renders children when passed in', () => {
+    const locations = [
+      createLocationPoint('Москва, Новый Арбат'),
+      createLocationPoint('Москва, Арбат'),
+    ];
+
+    const items = locations.map((location, i) => (
+      <PointListItem location={location} key={i}/>
+    ));
+
+    const wrapper = shallow(
+      <PointList>
+        {items}
+      </PointList>
+    );
+
+    expect(
+      wrapper.containsAllMatchingElements(items)
+    ).toBe(true);
+  })
 });
