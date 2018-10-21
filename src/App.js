@@ -15,12 +15,6 @@ import {
 
 const createLocationPoint = makeLocationPointFactory();
 
-const generateId = () => {
-  // Note: Keys are not determenistic and are calculated at the rendering time
-  // DEVELOPMENT ONLY
-  return `id_${new Date().getTime()}`;
-};
-
 class App extends Component {
   constructor(props) {
     super(props);
