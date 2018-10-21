@@ -31,6 +31,7 @@ export default class MapContainer extends Component {
     super(props);
 
     this.container = React.createRef();
+    this.ymaps = null;
 
     this.handleLoad = this.handleLoad.bind(this);
     this.handleRouteRequestSuccess = this.handleRouteRequestSuccess.bind(this);
@@ -39,13 +40,15 @@ export default class MapContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { locations } = this.props;
+
     if (!this.ymaps) {
       return;
     }
 
-    this.updateRoute(this.props.locations);
+    this.updateRoute(locations);
 
-    if (this.props.locations.length > prevProps.locations.length) {
+    if (locations.length > prevProps.locations.length) {
       // Update map center if new point was added and after route is updated  
       this.initialRoute.model.events.once('requestsuccess', () => {
         const wayPoints = this.initialRoute.getWayPoints();
@@ -91,9 +94,10 @@ export default class MapContainer extends Component {
 
   handleLoad(ymaps) {
     this.ymaps = ymaps;
+    const { locations } = this.props;
 
     this.initialRoute = new ymaps.multiRouter.MultiRoute({
-      referencePoints: this.props.locations.map((loc) => loc.value),
+      referencePoints: locations.map((loc) => loc.value),
       params: {
         // Limit routes number to 1, otherwise additional routes are shown
         results: 1,
