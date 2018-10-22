@@ -50,10 +50,10 @@ class App extends Component {
   addLocationPoint(value) {
     this.fetchPointCoords(value).then((coords) => {
       const locationPoint = createLocationPoint(value, coords);
-
-    this.setState((state) => ({
-      locations: addLocationPoint(state.locations, locationPoint),
-    }));
+  
+      this.setState((state) => ({
+        locations: addLocationPoint(state.locations, locationPoint),
+      }));
     });
   }
 
@@ -71,12 +71,12 @@ class App extends Component {
 
   updateLocationPoint(index, coords) {
     this.fetchPointAddress(coords).then((address) => {
-    this.setState((state) => ({
+      this.setState((state) => ({
         locations: updateLocationPoint(state.locations, index, {
           value: address,
           coords,
         }),
-    }));
+      }));
     });
   }
 
