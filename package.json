@@ -14,7 +14,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --modulePaths=\"<rootDir>/src/\"",
+    "test": "react-scripts test --modulePaths=src",
     "test:all": "set CI=true&&react-scripts test --verbose=true --modulePaths=src",
     "eject": "react-scripts eject"
   },
