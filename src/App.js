@@ -48,11 +48,13 @@ class App extends Component {
   }
 
   addLocationPoint(value) {
-    const locationPoint = createLocationPoint(value);
+    this.fetchPointCoords(value).then((coords) => {
+      const locationPoint = createLocationPoint(value, coords);
 
     this.setState((state) => ({
       locations: addLocationPoint(state.locations, locationPoint),
     }));
+    });
   }
 
   deleteLocationPoint(index) {
