@@ -2,10 +2,21 @@
  * @jest-environment node
  */
 
-import { updateLocationPoint, moveLocationPoint, addLocationPoint, deleteLocationPoint, createLocationPoint, makeLocationPointFactory } from './LocationPoint.js';
+import {
+  updateLocationPoint,
+  moveLocationPoint,
+  addLocationPoint,
+  deleteLocationPoint,
+  makeLocationPointFactory
+} from './LocationPoint.js';
 
 const getStubLocations = () => {
-  return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
+  return [
+    { id: 0, value: 'Москва', coords: [1, 2] },
+    { id: 1, value: 'Питер', coords: [3, 4] },
+    { id: 2, value: 'Казань', coords: [5, 6] },
+    { id: 3, value: 'Владивосток', coords: [7, 8] },
+  ];
 };
 
 let locations;
