@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { updateLocationPoint, moveLocationPoint, addLocationPoint, deleteLocationPoint, createLocationPoint, makeLocationPointFactory } from './LocationPoint.js';
 
 const getStubLocations = () => {
@@ -94,25 +98,24 @@ describe('addLocationPoint()', () => {
 });
 
 describe('deleteLocationPoint()', () => {
-  it('should delete the point with the specified id', () => {
-    const id = 1;
-    const expected = getStubLocations().filter((locPoint) => {
-      return locPoint.id !== id;
-    });
+  it('should delete the point with the specified index', () => {
+    const index = 1;
+    const expected = getStubLocations();
+    expected.splice(index, 1);
 
-    expect(deleteLocationPoint(locations, id)).toEqual(expected);
+    expect(deleteLocationPoint(locations, index)).toEqual(expected);
   });
 
-  it('should throw an error when id is undefined', () => {
+  it('should throw an error when index is undefined', () => {
     expect(() => {
       deleteLocationPoint(locations, undefined)
     }).toThrow();
   });
 
   it('should not mutate the provided locations array', () => {
-    const id = 1;
+    const index = 1;
 
-    deleteLocationPoint(locations, id);
+    deleteLocationPoint(locations, index);
 
     expect(locations).toEqual(locations);
   });

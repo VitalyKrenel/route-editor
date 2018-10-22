@@ -59,16 +59,16 @@ export function addLocationPoint(locations, locationPoint) {
  * The method does not mutate the provided args.
  * 
  * @param {Array.<LocationPoint>} locations
- * @param {number} id
+ * @param {number} index - the index of the item that should be deleted
  * @returns {Array.<LocationPoint>} a new locations array
  */
-export function deleteLocationPoint(locations, id) {
-  if (id === undefined) {
-    throw new Error('MissingArgument: Expected to get id as the second argument, but undefined encountered');
+export function deleteLocationPoint(locations, index) {
+  if (index === undefined) {
+    throw new Error('MissingArgument: Expected to get an array index as the second argument, but undefined encountered');
   }
 
-  return locations.filter((location) => {
-    return location.id !== id; 
+  return locations.filter((location, i) => {
+    return i !== index;
   });
 }
 
