@@ -20,11 +20,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      locations: [
-        createLocationPoint('Москва, Новый Арбат'),
-        createLocationPoint('Москва, Белорусский вокзал'),
-        createLocationPoint('Москва, Рижский вокзал'),
-      ],
+      locations: [],
     };
 
     this.addLocationPoint = this.addLocationPoint.bind(this);
