@@ -21,6 +21,8 @@ export function diffPoints(locationPoints, routeWayPoints) {
       updatedLocPoint = {
         index,
         coords: wayPoints[0].geometry.getCoordinates(),
+        address: wayPoints[0].properties.get('address'),
+        request: wayPoints[0].properties.get('request'),
       }; 
     } else {
       // Remove a wayPoint that wasn't dragged on Map
