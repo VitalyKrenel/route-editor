@@ -77,7 +77,10 @@ export default class MapContainer extends Component {
   }
 
   updateRoute(locations) {
-    const addressList = locations.map((location) => location.value);
+    const addressList = locations.map((location) => (
+      // Build route by coords if specified, otherwise fallback to address
+      location.coords.length !== 0 ? location.coords : location.value
+    ));
     this.initialRoute.model.setReferencePoints(addressList);
   }
 
