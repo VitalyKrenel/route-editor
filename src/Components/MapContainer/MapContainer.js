@@ -47,17 +47,16 @@ export default class MapContainer extends Component {
       return;
     }
 
-    const differ = diffPoints(locations, this.initialRoute.getWayPoints().toArray());
-    console.group('MapContainer: ComponentDidUpdate');
-    console.log(differ);
-    console.groupEnd('MapContainer: ComponentDidUpdate');
-    
-    // Note: This check is preventing route update by App passing props
-    // after a wayPoint was dragged (drag changes route already, no need to
-    // repeat route rebuild)
-    if (differ !== null) {
+    /**
+     * Note: Does not work as moveLocationPoint (drag&drop) is not considered
+      const wayPointsArray = this.initialRoute.getWayPoints().toArray();
+      // Note: This check is preventing the second route update 
+      // if location point was updated by MapContainer component
+      const shouldUpdateRoute = 
+        locations.length !== wayPointsArray.length ||
+        diffPoints(locations, wayPointsArray) !== null;
+     */
       this.updateRoute(locations);
-    }
 
     if (locations.length > prevProps.locations.length) {
       // Update map center if new point was added and after route is updated  
