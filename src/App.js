@@ -69,10 +69,15 @@ class App extends Component {
     }));
   }
 
-  updateLocationPoint(index, address) {
+  updateLocationPoint(index, coords) {
+    this.fetchPointAddress(coords).then((address) => {
     this.setState((state) => ({
-      locations: updateLocationPoint(state.locations, index, address),
+        locations: updateLocationPoint(state.locations, index, {
+          value: address,
+          coords,
+        }),
     }));
+    });
   }
 
   render() {
