@@ -93,7 +93,7 @@ export default class MapContainer extends Component {
     // if lengths are not equal then route was definitely updated through
     // add or delete methods hence it was not a map interaction.
     if (wayPoints.length === locations.length) { 
-      diffPoints(this.props.locations, wayPoints.slice(0));
+      diff = diffPoints(this.props.locations, wayPoints.slice(0));
     }
 
     /* Debug */
