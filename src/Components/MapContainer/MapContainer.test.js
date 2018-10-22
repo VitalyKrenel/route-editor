@@ -3,9 +3,12 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
 import MapContainer from './MapContainer.js';
+import { diffPoints } from './MapPointsUtils/MapPointsUtils.js'
 import { makeLocationPointFactory } from 'LocationPoint/LocationPoint.js';
-const createLocationPoint = makeLocationPointFactory();
 
+jest.mock('./MapPointsUtils/MapPointsUtils.js');
+
+const createLocationPoint = makeLocationPointFactory();
 const sandbox = sinon.createSandbox();
 
 const getFakeInitialRoute = () => ({
@@ -23,6 +26,7 @@ const getFakeInitialRoute = () => ({
       };
     },
     getLength: sinon.fake(),
+    toArray: sinon.fake(() => []),
   })),
 });
 
@@ -53,7 +57,8 @@ describe('<MapContainer />', () => {
 
   it('calls updateRoute when recives props', () => {
     const locations = [createLocationPoint('Франция')];
-    
+
+    sandbox.assert.notCalled(component.updateRoute);
     wrapper.setProps({ locations });
 
     sandbox.assert.calledOnce(component.updateRoute);
