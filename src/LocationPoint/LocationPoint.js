@@ -19,15 +19,17 @@ export const makeLocationPointFactory = ((initialId = 0) => {
    * and calculated id.
    * 
    * @param {string} address
+   * @param {arrray} coords
    * @returns {LocationPoint}
    */
-  return function createLocationPoint(address) {
+  return function createLocationPoint(address, coords = []) {
     if (address === undefined) {
       throw new Error('MisiingArgument: Expected to get an address arg, but undefined encountered');
     }
 
     const locationPoint = {
       id,
+      coords,
       value: address,
     };
 

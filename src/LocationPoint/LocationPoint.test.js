@@ -47,6 +47,18 @@ describe('createLocationPoint()', () => {
       createLocationPoint(undefined);
     }).toThrow();
   });
+
+  it('should return a location point with the specified coords', () => {
+    const coords = [12, 13];
+    const address = 'Москва';
+
+    expect(createLocationPoint(address, coords).coords).toEqual(coords);
+  });
+
+  it('should return a location point with coords property being an empty array when no coords provided', () => {
+    const address = 'Москва';
+    expect(createLocationPoint(address).coords).toEqual([]);
+  });
 });
 
 
