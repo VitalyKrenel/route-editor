@@ -1,11 +1,10 @@
 import './MapContainer.css';
 
 import React, { Component } from 'react';
-import { YMaps, Map } from 'react-yandex-maps';
+import { Map } from 'react-yandex-maps';
 
 import { diffPoints } from './MapPointsUtils/MapPointsUtils.js';
 
-const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
 const modules = [
   'multiRouter.MultiRoute',
   'geocode',
@@ -141,16 +140,14 @@ export default class MapContainer extends Component {
         className="MapContainer MapContainer_status_loading"
         ref={this.container}
       >
-        <YMaps query={{apikey}}>
-          <Map
-            className="Map"
-            modules={modules}  
-            defaultState={mapDefaults}
-            onLoad={this.handleLoad}
-            instanceRef={ref => (this.map = ref)}
-          >
-          </Map>
-        </YMaps>
+        <Map
+          className="Map"
+          modules={modules}  
+          defaultState={mapDefaults}
+          onLoad={this.handleLoad}
+          instanceRef={ref => (this.map = ref)}
+        >
+        </Map>
       </div>
     );
   }
