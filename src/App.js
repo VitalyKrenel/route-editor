@@ -1,6 +1,7 @@
 import './App.css';
 
 import React, { Component } from 'react';
+import { withYMaps } from 'react-yandex-maps';
 import MapContainer from './Components/MapContainer/MapContainer.js';
 import PointInput from './Components/PointInput/PointInput.js';
 import { DraggablePointList } from './Components/PointList/PointList.js';
@@ -74,4 +75,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withYMaps(App, true, ['geocode']);
