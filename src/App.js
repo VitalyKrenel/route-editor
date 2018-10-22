@@ -30,6 +30,23 @@ class App extends Component {
     this.updateLocationPoint = this.updateLocationPoint.bind(this);
   }
 
+  fetch(requestValue) {
+    const { geocode } = this.props.ymaps;
+    return geocode(requestValue, { results: 1 });
+  }
+
+  fetchPointCoords(address) {
+    return this.fetch(address).then(response => (
+      response.geoObjects.get(0).geometry.getCoordinates()
+    ));
+  }
+
+  fetchPointAddress(coordinates) {
+    return this.fetch(coordinates).then(response => (
+      response.geoObjects.get(0).getAddressLine()
+    ));
+  }
+
   addLocationPoint(value) {
     const locationPoint = createLocationPoint(value);
 
