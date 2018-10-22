@@ -16,7 +16,7 @@ export function diffPoints(locationPoints, routeWayPoints) {
       return locPoint.value === wayPoint.properties.get('request');
     });
     
-    if (foundIndex === -1) {
+    if (foundIndex === -1 && wayPoints.length !== 0) {
       // Define locationPoint that has no matching wayPoint
       updatedLocPoint = {
         index,
