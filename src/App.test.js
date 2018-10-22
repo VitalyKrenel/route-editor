@@ -28,7 +28,7 @@ describe('<App />', () => {
   it('passes new location points to PointList', () => {
     const wrapper = mount(<App />);
     const component = wrapper.instance();
-    console.log(wrapper.debug());
+
     component.addLocationPoint('Москва, Красная площадь');
     component.addLocationPoint('Москва, Рижская станция');
     component.addLocationPoint('Москва, Белорусский вокзал');
