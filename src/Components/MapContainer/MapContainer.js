@@ -46,7 +46,7 @@ export default class MapContainer extends Component {
     if (!this.ymaps) {
       return;
     }
-
+    
     /**
      * Note: Does not work as moveLocationPoint (drag&drop) is not considered
       const wayPointsArray = this.initialRoute.getWayPoints().toArray();
@@ -56,7 +56,7 @@ export default class MapContainer extends Component {
         locations.length !== wayPointsArray.length ||
         diffPoints(locations, wayPointsArray) !== null;
      */
-      this.updateRoute(locations);
+    this.updateRoute(locations);
 
     if (locations.length > prevProps.locations.length) {
       // Update map center if new point was added and after route is updated  
@@ -93,7 +93,7 @@ export default class MapContainer extends Component {
     // if lengths are not equal then route was definitely updated through
     // add or delete methods hence it was not a map interaction.
     if (wayPoints.length === locations.length) { 
-      diff = diffPoints(this.props.locations, wayPoints.slice(0));
+      diffPoints(this.props.locations, wayPoints.slice(0));
     }
 
     /* Debug */
@@ -135,7 +135,7 @@ export default class MapContainer extends Component {
       params: {
         // Limit routes number to 1, otherwise additional routes are shown
         results: 1,
-        reverseGeocoding: true,
+        // reverseGeocoding: true,
       }
     },  routeOptions(ymaps));
 
