@@ -85,7 +85,16 @@ export default class MapContainer extends Component {
 
   handleRouteRequestSuccess(ymaps, e) {
     const wayPoints = this.initialRoute.getWayPoints().toArray();
-    const diff = diffPoints(this.props.locations, wayPoints.slice(0));
+    const { locations } = this.props;
+
+    let diff;
+
+    // Note: diffPoints is an expensive operation, ensure we need it
+    // if lengths are not equal then route was definitely updated through
+    // add or delete methods hence it was not a map interaction.
+    if (wayPoints.length === locations.length) { 
+      diff = diffPoints(this.props.locations, wayPoints.slice(0));
+    }
 
     /* Debug */
       console.group('Route request success');
