@@ -105,9 +105,12 @@ export default class MapContainer extends Component {
       console.groupEnd('Route request success');
     /* #Debug */
 
+    // RouteSuccess event was fired because of the user interaction with map
+    // (i.e. way points drag&drop discovered) - requires App.state.locations
+    // update for synching
     if (diff) {
       const { onWayPointDrag: updateLocationPoint } = this.props;
-      updateLocationPoint(diff.index, diff.address);
+      updateLocationPoint(diff.index, diff.coords);
     }
 
     /**
