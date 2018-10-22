@@ -3,6 +3,8 @@ import './MapContainer.css';
 import React, { Component } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
 
+import { diffPoints } from './MapPointsUtils/MapPointsUtils.js';
+
 const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
 const modules = [
   'multiRouter.MultiRoute',
@@ -46,7 +48,17 @@ export default class MapContainer extends Component {
       return;
     }
 
-    this.updateRoute(locations);
+    const differ = diffPoints(locations, this.initialRoute.getWayPoints().toArray());
+    console.group('MapContainer: ComponentDidUpdate');
+    console.log(differ);
+    console.groupEnd('MapContainer: ComponentDidUpdate');
+    
+    // Note: This check is preventing route update by App passing props
+    // after a wayPoint was dragged (drag changes route already, no need to
+    // repeat route rebuild)
+    if (differ !== null) {
+      this.updateRoute(locations);
+    }
 
     if (locations.length > prevProps.locations.length) {
       // Update map center if new point was added and after route is updated  
@@ -70,16 +82,25 @@ export default class MapContainer extends Component {
     this.initialRoute.model.setReferencePoints(addressList);
   }
 
-  handleRouteRequestSuccess(ymaps) {
+  handleRouteRequestSuccess(ymaps, e) {
     const wayPoints = this.initialRoute.getWayPoints().toArray();
+    const diff = diffPoints(this.props.locations, wayPoints.slice(0));
+
     /* Debug */
       console.group('Route request success');
-      console.count('Route rebuilds: ');
+      console.count('Route updated (times)');
+      console.log('Is first route request: ' + e.get('init'));
       console.log(wayPoints);
+      console.log(diff);
       console.groupEnd('Route request success');
     /* #Debug */
 
-    /** 
+    if (diff) {
+      const { onWayPointDrag: updateLocationPoint } = this.props;
+      updateLocationPoint(diff.index, diff.address);
+    }
+
+    /**
      * Note: This eliminates the neccessity of creating own balloon yout,
      * but I didn't find a way to attach this addon directly to route, so
      * I wouldn't have to handle this manually each time wayPoints 
@@ -105,9 +126,10 @@ export default class MapContainer extends Component {
       }
     },  routeOptions(ymaps));
 
-    this.initialRoute.model.events.add('requestsuccess', () => {
-      this.handleRouteRequestSuccess(ymaps);
+    this.initialRoute.model.events.add('requestsuccess', (event) => {
+      this.handleRouteRequestSuccess(ymaps, event);
     });
+
 
     this.container.current.classList.remove('MapContainer_status_loading');
     this.map.geoObjects.add(this.initialRoute);
