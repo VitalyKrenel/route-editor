@@ -13,7 +13,7 @@ import {
   updateLocationPoint,
   makeLocationPointFactory,
 } from './LocationPoint/LocationPoint.js';
-import { isEmptyArray } from './Utils/Array.js'
+import { notEmptyArray } from './Utils/Array.js'
 
 const createLocationPoint = makeLocationPointFactory();
 
@@ -84,7 +84,7 @@ export class App extends Component {
       locations: updateLocationPoint(state.locations, index, update),
     });
 
-    if (!isEmptyArray(update.coords)) {
+    if (notEmptyArray(update.coords)) {
       // Fetch a corresponding address
       update.value = await this.fetchPointAddress(update.coords); 
     } else if (update.value) {
