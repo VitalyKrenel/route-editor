@@ -1,4 +1,30 @@
 /**
+ * Compare 2 points and check whether they match each other, i.e. they have
+ * equal coordinates. If coordinates aren't specified for location point,
+ * comparison is performed by location point's `address`.
+ * 
+ * @param {import("../LocationPoint/LocationPoint").LocationPoint} locPoint 
+ * @param {GeoObject} wayPoint
+ * 
+ * @see https://clck.ru/EapUj
+ * 
+ * @returns {boolean} true if the points match each other, otherwise false
+ */
+function comparePoints(locPoint, wayPoint) {
+  // Compare loc and way point's coords if defined or fallback to
+  // address, if those match - return wayPoint index  
+  if (locPoint.coords.length !== 0) {
+    const wayPointCoords = wayPoint.geometry.getCoordinates();
+    return (
+      locPoint.coords[0] === wayPointCoords[0] &&
+      locPoint.coords[1] === wayPointCoords[1]
+    );
+  }
+
+  return locPoint.value === wayPoint.properties.get('request');
+}
+
+/**
  * Compare locationsPoints and wayPoints. If any locPoint does not
  * match a wayPoint, return an object representing locPoint `index` in locations array, and wayPoint `coords`, `address` and `request`.
  * 
@@ -16,36 +42,38 @@
  * @returns {Object}
  */
 export function diffPoints(locationPoints, routeWayPoints) {
-  let updatedLocPoint = null;
   const wayPoints = routeWayPoints.slice(0);
 
-  locationPoints.forEach((locPoint, index) => { 
-    const foundIndex = wayPoints.findIndex((wayPoint) => {
-      // Match loc and way point with coords if defined or fallback to
-      // address comparison  
-      if (locPoint.coords.length !== 0) {
-        const wayPointCoords = wayPoint.geometry.getCoordinates();
-        return (
-          locPoint.coords[0] === wayPointCoords[0] &&
-          locPoint.coords[1] === wayPointCoords[1]
-        );
-      }
-      return locPoint.value === wayPoint.properties.get('request');
-    });
+  for (let i = 0; i < locationPoints.length; i++) {
+    const locPoint = locationPoints[i];
     
-    if (foundIndex === -1 && wayPoints.length !== 0) {
-      // Define locationPoint that has no matching wayPoint
-      updatedLocPoint = {
-        index,
-        coords: wayPoints[0].geometry.getCoordinates(),
-        address: wayPoints[0].properties.get('address'),
-        request: wayPoints[0].properties.get('request'),
+    const wayPointHasMatchIndex = wayPoints.findIndex((wayPoint) => 
+      comparePoints(locPoint, wayPoint),
+    );
+    
+    // Way point has no matching location point
+    // locationPoints length may be greater/lesser than wayPoints (if func was
+    // called after a new location point was added/removed)
+    if (wayPointHasMatchIndex === -1 && wayPoints.length !== 0) {
+      const point = wayPoints[0];
+      const newCoords = point.geometry.getCoordinates();
+      // Return a diff object to update a location point at the specified 
+      // index with new coordinates
+      return {
+        index: i,
+        coords: newCoords,
+        address: point.properties.get('address'),
+        request: point.properties.get('request'),
       };
     } else {
-      // Remove a wayPoint that wasn't dragged on Map
-      wayPoints.splice(foundIndex, 1);
-    }
-  });
+      // Not perform extra steps
+      if (wayPoints.length === 0) break;
 
-  return updatedLocPoint;
+      // Remove a wayPoint that wasn't changed {it has a pair 
+      // in location points array)
+      wayPoints.splice(wayPointHasMatchIndex, 1);
+    }
+  }
+
+  return null;
 }
