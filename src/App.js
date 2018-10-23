@@ -13,6 +13,7 @@ import {
   updateLocationPoint,
   makeLocationPointFactory,
 } from './LocationPoint/LocationPoint.js';
+import { isEmptyArray } from './Utils/Array.js'
 
 const createLocationPoint = makeLocationPointFactory();
 
@@ -36,15 +37,15 @@ export class App extends Component {
   }
 
   fetchPointCoords(address) {
-    return this.fetch(address).then(response => (
+    return this.fetch(address).then(response => 
       response.geoObjects.get(0).geometry.getCoordinates()
-    ));
+    );
   }
 
   fetchPointAddress(coordinates) {
-    return this.fetch(coordinates).then(response => (
+    return this.fetch(coordinates).then(response => 
       response.geoObjects.get(0).getAddressLine()
-    ));
+    );
   }
 
   addLocationPoint(value) {
