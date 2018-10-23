@@ -3,10 +3,10 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
 import MapContainer from './MapContainer.js';
-import { diffPoints } from './MapPointsUtils/MapPointsUtils.js'
+import { diffPoints } from 'Utils/MapPoints.js'
 import { makeLocationPointFactory } from 'LocationPoint/LocationPoint.js';
 
-jest.mock('./MapPointsUtils/MapPointsUtils.js');
+jest.mock('Utils/MapPoints.js');
 
 const createLocationPoint = makeLocationPointFactory();
 const sandbox = sinon.createSandbox();
