@@ -48,13 +48,22 @@ export class App extends Component {
     );
   }
 
-  addLocationPoint(value) {
-    this.fetchPointCoords(value).then((coords) => {
+  async addLocationPoint(value) {
+    const coords = await this.fetchPointCoords(value);
       const locationPoint = createLocationPoint(value, coords);
   
-      this.setState((state) => ({
+    const updateState = (state) => ({
         locations: addLocationPoint(state.locations, locationPoint),
-      }));
+    });
+
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(updateState, () => {
+          resolve(locationPoint);
+        });
+      } catch (e) {
+        reject(e);
+  }
     });
   }
 
