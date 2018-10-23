@@ -71,12 +71,14 @@ export class App extends Component {
 
   updateLocationPoint(index, coords) {
     this.fetchPointAddress(coords).then((address) => {
-      this.setState((state) => ({
+      const updateState = (state) => ({
         locations: updateLocationPoint(state.locations, index, {
           value: address,
           coords,
         }),
-      }));
+      });
+
+      this.setState(updateState);
     });
   }
 
