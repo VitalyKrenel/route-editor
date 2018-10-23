@@ -1,11 +1,10 @@
 import './MapContainer.css';
 
 import React, { Component } from 'react';
-import { YMaps, Map } from 'react-yandex-maps';
+import { Map } from 'react-yandex-maps';
 
-import { diffPoints } from './MapPointsUtils/MapPointsUtils.js';
+import { diffPoints } from 'Utils/MapPoints.js';
 
-const apikey = '262287d2-a40d-4b35-b808-7d4231cb5915';
 const modules = [
   'multiRouter.MultiRoute',
   'geocode',
@@ -42,26 +41,23 @@ export default class MapContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (!this.ymaps) { return; }
+
     const { locations } = this.props;
 
-    if (!this.ymaps) {
-      return;
-    }
-
-    const differ = diffPoints(locations, this.initialRoute.getWayPoints().toArray());
-    console.group('MapContainer: ComponentDidUpdate');
-    console.log(differ);
-    console.groupEnd('MapContainer: ComponentDidUpdate');
-    
-    // Note: This check is preventing route update by App passing props
-    // after a wayPoint was dragged (drag changes route already, no need to
-    // repeat route rebuild)
-    if (differ !== null) {
-      this.updateRoute(locations);
-    }
+    /**
+     * Note: Does not work as moveLocationPoint (drag&drop) is not considered
+      const wayPointsArray = this.initialRoute.getWayPoints().toArray();
+      // Note: This check is preventing the second route update 
+      // if location point was updated by MapContainer component
+      const shouldUpdateRoute = 
+        locations.length !== wayPointsArray.length ||
+        diffPoints(locations, wayPointsArray) !== null;
+     */
+    this.updateRoute(locations);
 
     if (locations.length > prevProps.locations.length) {
-      // Update map center if new point was added and after route is updated  
+      // Set map center if a new point was added when route is done updating
       this.initialRoute.model.events.once('requestsuccess', () => {
         const wayPoints = this.initialRoute.getWayPoints();
         const lastWayPoint = wayPoints.get(wayPoints.getLength() - 1);
@@ -78,13 +74,25 @@ export default class MapContainer extends Component {
   }
 
   updateRoute(locations) {
-    const addressList = locations.map((location) => location.value);
+    const addressList = locations.map((location) => (
+      // Build route by coords if specified, otherwise fallback to address
+      location.coords.length !== 0 ? location.coords : location.value
+    ));
     this.initialRoute.model.setReferencePoints(addressList);
   }
 
   handleRouteRequestSuccess(ymaps, e) {
     const wayPoints = this.initialRoute.getWayPoints().toArray();
-    const diff = diffPoints(this.props.locations, wayPoints.slice(0));
+    const { locations } = this.props;
+
+    let diff;
+
+    // Note: diffPoints is an expensive operation, ensure we need it
+    // if lengths are not equal then route was definitely updated through
+    // add or delete methods hence it was not a map interaction.
+    if (wayPoints.length === locations.length) { 
+      diff = diffPoints(this.props.locations, wayPoints.slice(0));
+    }
 
     /* Debug */
       console.group('Route request success');
@@ -95,9 +103,12 @@ export default class MapContainer extends Component {
       console.groupEnd('Route request success');
     /* #Debug */
 
+    // RouteSuccess event was fired because of the user interaction with map
+    // (i.e. way points drag&drop discovered) - requires App.state.locations
+    // update for synching
     if (diff) {
       const { onWayPointDrag: updateLocationPoint } = this.props;
-      updateLocationPoint(diff.index, diff.address);
+      updateLocationPoint(diff.index, { coords: diff.coords });
     }
 
     /**
@@ -122,7 +133,7 @@ export default class MapContainer extends Component {
       params: {
         // Limit routes number to 1, otherwise additional routes are shown
         results: 1,
-        reverseGeocoding: true,
+        // reverseGeocoding: true,
       }
     },  routeOptions(ymaps));
 
@@ -141,16 +152,14 @@ export default class MapContainer extends Component {
         className="MapContainer MapContainer_status_loading"
         ref={this.container}
       >
-        <YMaps query={{apikey}}>
-          <Map
-            className="Map"
-            modules={modules}  
-            defaultState={mapDefaults}
-            onLoad={this.handleLoad}
-            instanceRef={ref => (this.map = ref)}
-          >
-          </Map>
-        </YMaps>
+        <Map
+          className="Map"
+          modules={modules}  
+          defaultState={mapDefaults}
+          onLoad={this.handleLoad}
+          instanceRef={ref => (this.map = ref)}
+        >
+        </Map>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import './App.css';
 
 import React, { Component } from 'react';
+import { withYMaps } from 'react-yandex-maps';
 import MapContainer from './Components/MapContainer/MapContainer.js';
 import PointInput from './Components/PointInput/PointInput.js';
 import { DraggablePointList } from './Components/PointList/PointList.js';
@@ -12,10 +13,11 @@ import {
   updateLocationPoint,
   makeLocationPointFactory,
 } from './LocationPoint/LocationPoint.js';
+import { notEmptyArray } from './Utils/Array.js'
 
 const createLocationPoint = makeLocationPointFactory();
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
 
@@ -29,12 +31,40 @@ class App extends Component {
     this.updateLocationPoint = this.updateLocationPoint.bind(this);
   }
 
-  addLocationPoint(value) {
-    const locationPoint = createLocationPoint(value);
+  fetch(requestValue) {
+    const { geocode } = this.props.ymaps;
+    return geocode(requestValue, { results: 1 });
+  }
 
-    this.setState((state) => ({
+  fetchPointCoords(address) {
+    return this.fetch(address).then(response => 
+      response.geoObjects.get(0).geometry.getCoordinates()
+    );
+  }
+
+  fetchPointAddress(coordinates) {
+    return this.fetch(coordinates).then(response => 
+      response.geoObjects.get(0).getAddressLine()
+    );
+  }
+
+  async addLocationPoint(value) {
+    const coords = await this.fetchPointCoords(value);
+    const locationPoint = createLocationPoint(value, coords);
+
+    const updateState = (state) => ({
       locations: addLocationPoint(state.locations, locationPoint),
-    }));
+    });
+
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(updateState, () => {
+          resolve(locationPoint);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
 
   deleteLocationPoint(index) {
@@ -49,10 +79,30 @@ class App extends Component {
     }));
   }
 
-  updateLocationPoint(index, address) {
-    this.setState((state) => ({
-      locations: updateLocationPoint(state.locations, index, address),
-    }));
+  async updateLocationPoint(index, update) {
+    const updateState = (state) => ({
+      locations: updateLocationPoint(state.locations, index, update),
+    });
+
+    if (notEmptyArray(update.coords)) {
+      // Fetch a corresponding address
+      update.value = await this.fetchPointAddress(update.coords); 
+    } else if (update.value) {
+      // Fetch a corresponding coordinates
+      update.coords = await this.fetchPointCoords(update.value);
+    }
+
+    // Return a new promise that will be resolved only after
+    // the state is updated
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(updateState, () => {
+          resolve(update);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
 
   render() {
@@ -74,4 +124,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withYMaps(App, true, ['geocode']);

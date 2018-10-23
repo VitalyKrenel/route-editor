@@ -19,15 +19,17 @@ export const makeLocationPointFactory = ((initialId = 0) => {
    * and calculated id.
    * 
    * @param {string} address
+   * @param {arrray} coords
    * @returns {LocationPoint}
    */
-  return function createLocationPoint(address) {
+  return function createLocationPoint(address, coords = []) {
     if (address === undefined) {
       throw new Error('MisiingArgument: Expected to get an address arg, but undefined encountered');
     }
 
     const locationPoint = {
       id,
+      coords,
       value: address,
     };
 
@@ -101,26 +103,41 @@ export function moveLocationPoint(locations, fromPosition, toPosition) {
 }
 
 /**
+ * 
+ * @typedef {Object} Update 
+ * @property {Array.<number>?} coords - two-items array of point coordinates
+ * @property {string?} value - text address of the point
+ */
+
+/**
  * Returns a new array with the LocationPoint at the specified index being 
- * updated with the address value. 
+ * updated with the address value. If update object is null, the method will
+ * reassign the element at a given index, without changing an actual values 
+ * (only the item reference will be changed).
  * 
  * The method does not mutate the provided args.
  * 
  * @param {Array.<LocationPoint>} locations 
  * @param {number} index
- * @param {string} address
+ * @param {Update|null} update
  * 
  * @returns {Array.<LocationPoint>}
  */
-export function updateLocationPoint(locations, index, address) {
+export function updateLocationPoint(locations, index, update) {
   if (index < 0 || index >= locations.length) {
     throw new Error(`RangeError: Trying to access element being out of the locations array range`);
   }
 
-  const locs = locations.slice(0);
-  const { id } = locs[index];
+  if (typeof update !== 'object') {
+    throw new Error('SignatureError: Expected to get the second argument as an object');
+  }
 
-  locs[index] = { id, value: address };
+  if (update && (!Array.isArray(update.coords) && !update.value)) {
+    throw new Error('ArgumentSignatureError: Expected to get the second update arg with either address or coordinates or both, but no defined property encountered')
+  }
+  const locs = locations.slice(0);
   
+  locs[index] = Object.assign({}, locs[index], update);
+
   return locs;
 }
