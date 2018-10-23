@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
 import MapContainer from './MapContainer.js';
-import { diffPoints } from 'Utils/MapPoints.js'
+import { diffPoints } from 'Utils/MapPoints.js';
 import { makeLocationPointFactory } from 'LocationPoint/LocationPoint.js';
 
 jest.mock('Utils/MapPoints.js');
