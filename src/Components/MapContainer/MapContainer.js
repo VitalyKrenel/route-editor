@@ -41,12 +41,10 @@ export default class MapContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (!this.ymaps) { return; }
+
     const { locations } = this.props;
 
-    if (!this.ymaps) {
-      return;
-    }
-    
     /**
      * Note: Does not work as moveLocationPoint (drag&drop) is not considered
       const wayPointsArray = this.initialRoute.getWayPoints().toArray();
@@ -59,7 +57,7 @@ export default class MapContainer extends Component {
     this.updateRoute(locations);
 
     if (locations.length > prevProps.locations.length) {
-      // Update map center if new point was added and after route is updated  
+      // Set map center if a new point was added when route is done updating
       this.initialRoute.model.events.once('requestsuccess', () => {
         const wayPoints = this.initialRoute.getWayPoints();
         const lastWayPoint = wayPoints.get(wayPoints.getLength() - 1);
