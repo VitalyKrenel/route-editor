@@ -1,69 +1,108 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import MapContainer from './MapContainer/MapContainer.js';
-import PointInput from './PointInput/PointInput.js';
-import PointList from './PointList/PointList.js';
+import { withYMaps } from 'react-yandex-maps';
+import MapContainer from './Components/MapContainer/MapContainer.js';
+import PointInput from './Components/PointInput/PointInput.js';
+import { DraggablePointList } from './Components/PointList/PointList.js';
 
-const generateId = () => {
-  // Note: Keys are not determenistic and are calculated at the rendering time
-  // DEVELOPMENT ONLY
-  return `id_${new Date().getTime()}`;
-};
+import {
+  addLocationPoint,
+  deleteLocationPoint,
+  moveLocationPoint,
+  updateLocationPoint,
+  makeLocationPointFactory,
+} from './LocationPoint/LocationPoint.js';
+import { notEmptyArray } from './Utils/Array.js'
 
-class App extends Component {
+const createLocationPoint = makeLocationPointFactory();
+
+export class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      locations: [
-        { value: 'Москва, Новый Арбат', id: generateId() + 1},
-        { value: 'Москва, Белорусский вокзал', id: generateId() + 2 },
-        { value: 'Москва, Рижский вокзал', id: generateId() + 3 },
-      ],
+      locations: [],
     };
+
     this.addLocationPoint = this.addLocationPoint.bind(this);
     this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
     this.moveLocationPoint = this.moveLocationPoint.bind(this);
     this.updateLocationPoint = this.updateLocationPoint.bind(this);
   }
 
-  addLocationPoint(value) {
-    const locations = this.state.locations.slice(0);
-    const newLocationPoint = { 
-      value,
-      id: generateId(),
-    };
-    
-    console.log(newLocationPoint);
-    
-    this.setState({ locations: locations.concat(newLocationPoint) });
+  fetch(requestValue) {
+    const { geocode } = this.props.ymaps;
+    return geocode(requestValue, { results: 1 });
   }
 
-  deleteLocationPoint(id) {
-    const locations = this.state.locations.slice(0).filter((location) => {
-      return location.id !== id; 
+  fetchPointCoords(address) {
+    return this.fetch(address).then(response => 
+      response.geoObjects.get(0).geometry.getCoordinates()
+    );
+  }
+
+  fetchPointAddress(coordinates) {
+    return this.fetch(coordinates).then(response => 
+      response.geoObjects.get(0).getAddressLine()
+    );
+  }
+
+  async addLocationPoint(value) {
+    const coords = await this.fetchPointCoords(value);
+    const locationPoint = createLocationPoint(value, coords);
+
+    const updateState = (state) => ({
+      locations: addLocationPoint(state.locations, locationPoint),
     });
-    
-    this.setState({ locations });
+
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(updateState, () => {
+          resolve(locationPoint);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  deleteLocationPoint(index) {
+    this.setState((state) => ({
+      locations: deleteLocationPoint(state.locations, index),
+    }));
   }
 
   moveLocationPoint(from, to) {
-    const locations = this.state.locations.slice(0);
-    const extractedPoint = locations.splice(from, 1)[0];
-    locations.splice(to, 0, extractedPoint);
-
-    // console.log(locations);
-    // console.log(this.state.locations);
-
-    this.setState(state => ({ locations }));
+    this.setState((state) => ({
+      locations: moveLocationPoint(state.locations, from, to),
+    }));
   }
 
-  updateLocationPoint(index, address) {
-    const locations = this.state.locations.slice(0);
-    locations[index] = { value: address, id: generateId() };
+  async updateLocationPoint(index, update) {
+    const updateState = (state) => ({
+      locations: updateLocationPoint(state.locations, index, update),
+    });
 
-    this.setState(state => ({ locations }));
+    if (notEmptyArray(update.coords)) {
+      // Fetch a corresponding address
+      update.value = await this.fetchPointAddress(update.coords); 
+    } else if (update.value) {
+      // Fetch a corresponding coordinates
+      update.coords = await this.fetchPointCoords(update.value);
+    }
+
+    // Return a new promise that will be resolved only after
+    // the state is updated
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(updateState, () => {
+          resolve(update);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
 
   render() {
@@ -71,7 +110,7 @@ class App extends Component {
       <main className="App">
         <div className="App-Dashboard">
           <PointInput onSubmit={this.addLocationPoint} />
-          <PointList
+          <DraggablePointList
             onDragEnd={this.moveLocationPoint}
             onDelete={this.deleteLocationPoint}
             locations={this.state.locations} />
@@ -85,4 +124,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withYMaps(App, true, ['geocode']);

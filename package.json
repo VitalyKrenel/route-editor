@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ajv": "^6.0.0",
+    "ajv-keywords": "^3.2.0",
     "react": "^16.5.2",
     "react-beautiful-dnd": "^9.0.2",
     "react-dom": "^16.5.2",
@@ -12,7 +14,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --modulePaths=src",
+    "test:all": "set CI=true&&react-scripts test --verbose=true --modulePaths=src",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -25,6 +28,14 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/enzyme": "^3.1.14",
+    "@types/jest": "^23.3.5",
+    "@types/react": "^16.4.18",
+    "@types/react-dom": "^16.0.9",
+    "@types/sinon": "^5.0.5",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
+    "sinon": "^7.0.0",
     "stylelint": "^9.6.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-order": "^1.0.0"
