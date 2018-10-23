@@ -110,7 +110,7 @@ export default class MapContainer extends Component {
     // update for synching
     if (diff) {
       const { onWayPointDrag: updateLocationPoint } = this.props;
-      updateLocationPoint(diff.index, diff.coords);
+      updateLocationPoint(diff.index, { coords: diff.coords });
     }
 
     /**
