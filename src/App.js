@@ -50,10 +50,10 @@ export class App extends Component {
 
   async addLocationPoint(value) {
     const coords = await this.fetchPointCoords(value);
-      const locationPoint = createLocationPoint(value, coords);
-  
+    const locationPoint = createLocationPoint(value, coords);
+
     const updateState = (state) => ({
-        locations: addLocationPoint(state.locations, locationPoint),
+      locations: addLocationPoint(state.locations, locationPoint),
     });
 
     return new Promise((resolve, reject) => {
@@ -63,7 +63,7 @@ export class App extends Component {
         });
       } catch (e) {
         reject(e);
-  }
+      }
     });
   }
 
@@ -79,16 +79,29 @@ export class App extends Component {
     }));
   }
 
-  updateLocationPoint(index, coords) {
-    this.fetchPointAddress(coords).then((address) => {
-      const updateState = (state) => ({
-        locations: updateLocationPoint(state.locations, index, {
-          value: address,
-          coords,
-        }),
-      });
+  async updateLocationPoint(index, update) {
+    const updateState = (state) => ({
+      locations: updateLocationPoint(state.locations, index, update),
+    });
 
-      this.setState(updateState);
+    if (!isEmptyArray(update.coords)) {
+      // Fetch a corresponding address
+      update.value = await this.fetchPointAddress(update.coords); 
+    } else if (update.value) {
+      // Fetch a corresponding coordinates
+      update.coords = await this.fetchPointCoords(update.value);
+    }
+
+    // Return a new promise that will be resolved only after
+    // the state is updated
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(updateState, () => {
+          resolve(update);
+        });
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
