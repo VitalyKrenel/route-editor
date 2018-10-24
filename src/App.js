@@ -5,6 +5,7 @@ import { withYMaps } from 'react-yandex-maps';
 import MapContainer from './Components/MapContainer/MapContainer.js';
 import PointInput from './Components/PointInput/PointInput.js';
 import { DraggablePointList } from './Components/PointList/PointList.js';
+import { ScreenToggler } from './Components/ScreenToggler/ScreenToggler.js';
 
 import {
   addLocationPoint,
@@ -136,18 +137,23 @@ export class App extends Component {
             App-Dashboard
             ${shouldBeHidden(viewList[0], activeView)}
           `}>
-          <PointInput onSubmit={this.addLocationPoint} />
-          <DraggablePointList
-            onDragEnd={this.moveLocationPoint}
-            onDelete={this.deleteLocationPoint}
-            locations={this.state.locations} />
-        </div>
-        <MapContainer
+            <PointInput onSubmit={this.addLocationPoint} />
+            <DraggablePointList
+              onDragEnd={this.moveLocationPoint}
+              onDelete={this.deleteLocationPoint}
+              locations={this.state.locations} />
+          </div>
+          <MapContainer
             className={shouldBeHidden(viewList[1], activeView)}
-          locations={this.state.locations}
-          onWayPointDrag={this.updateLocationPoint} 
-        />
+            locations={this.state.locations}
+            onWayPointDrag={this.updateLocationPoint} 
+          />     
         </div>
+        <ScreenToggler
+          onToggle={this.toggleView}
+          initialLabel="Показать карту"
+          toggledLabel="Показать список точек"
+        />
       </main>
     );
   }
