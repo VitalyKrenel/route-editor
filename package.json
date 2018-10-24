@@ -15,7 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --modulePaths=src",
-    "test:all": "set CI=true&&react-scripts test --verbose=true --modulePaths=src",
+    "test:unit": "set CI=true&&react-scripts test \".*[^i]test\\.js$\" --verbose=true --modulePaths=src",
     "test:integration": "react-scripts test \"itest.js$\" --modulePaths=src",
     "eject": "react-scripts eject"
   },
