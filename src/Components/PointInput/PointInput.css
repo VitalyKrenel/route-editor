@@ -3,7 +3,7 @@
 }
 
 .PointInput {
-  width: 300px;
+  width: 100%;
   height: var(--PointInput-height);
   padding: 10px 5px;
 

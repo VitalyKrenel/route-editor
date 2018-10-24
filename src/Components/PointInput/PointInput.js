@@ -27,7 +27,7 @@ export default class PointInput extends Component {
 
   render() {
     return (
-      <form className="App-PointInputWrapper" onSubmit={this.handleSubmit}>
+      <form className="App-Form" onSubmit={this.handleSubmit}>
         <input className="PointInput" type="text" value={this.state.value} onChange={this.handleChange} placeholder="Введите адрес..." />
       </form>
     );
