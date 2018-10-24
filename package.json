@@ -16,7 +16,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --modulePaths=src",
     "test:unit": "set CI=true&&react-scripts test \".*[^i]test\\.js$\" --verbose=true --modulePaths=src",
-    "test:integration": "react-scripts test \"itest.js$\" --modulePaths=src",
+    "test:integration": "set CI=true&&react-scripts test \".*itest\\.js$\" --modulePaths=src",
+    "watch:unit": "react-scripts test \".*[^i]test\\.js$\" --modulePaths=src",
+    "watch:integration": "react-scripts test \".*itest\\.js$\" --modulePaths=src",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
