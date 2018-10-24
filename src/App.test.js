@@ -136,14 +136,14 @@ describe('<App />', () => {
     expect(locations).toHaveLength(0);
   });
 
-  it('removes a location point from PointList', () => {
+  it('removes a location point from PointList', async () => {
     const wrapper = mount(<App />);
     const component = wrapper.instance();
-    const pointList = wrapper.find('PointList');
 
-    component.addLocationPoint('Москва');
-    component.deleteLocationPoint(0);
-    pointList.update();
+    const point = await component.addLocationPoint('Москва');
+    wrapper.update();
+    component.deleteLocationPoint(point.id);
+    wrapper.update();
 
     expect(wrapper.find('PointListItem')).toHaveLength(0);
   });
