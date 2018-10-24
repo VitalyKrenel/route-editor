@@ -15,8 +15,6 @@ import {
 } from './LocationPoint/LocationPoint.js';
 import { notEmptyArray } from './Utils/Array.js'
 
-const createLocationPoint = makeLocationPointFactory();
-
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +22,8 @@ export class App extends Component {
     this.state = {
       locations: [],
     };
+
+    this.createLocationPoint = makeLocationPointFactory();
 
     this.addLocationPoint = this.addLocationPoint.bind(this);
     this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
@@ -50,7 +50,7 @@ export class App extends Component {
 
   async addLocationPoint(value) {
     const coords = await this.fetchPointCoords(value);
-    const locationPoint = createLocationPoint(value, coords);
+    const locationPoint = this.createLocationPoint(value, coords);
 
     const updateState = (state) => ({
       locations: addLocationPoint(state.locations, locationPoint),
@@ -67,9 +67,9 @@ export class App extends Component {
     });
   }
 
-  deleteLocationPoint(index) {
+  deleteLocationPoint(id) {
     this.setState((state) => ({
-      locations: deleteLocationPoint(state.locations, index),
+      locations: deleteLocationPoint(state.locations, id),
     }));
   }
 

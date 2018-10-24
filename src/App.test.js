@@ -73,21 +73,6 @@ describe('<App />', () => {
     expect(locationPoint.value).toBe(address);
   });
 
-  it('passes new location points to PointList', async () => {
-    expect.assertions(1);
-
-    const wrapper = mount(<App />);
-    const component = wrapper.instance();
-
-    await component.addLocationPoint('Москва, Красная площадь');
-    await component.addLocationPoint('Москва, Рижская станция');
-    await component.addLocationPoint('Москва, Белорусский вокзал');
-
-    wrapper.find('PointList').update();
-    
-    expect(wrapper.find('PointListItem')).toHaveLength(3);
-  });
-
   it('updates location point in the state with the specified index', async () => {
     expect.assertions(1);
 
@@ -136,18 +121,6 @@ describe('<App />', () => {
     expect(locations).toHaveLength(0);
   });
 
-  it('removes a location point from PointList', () => {
-    const wrapper = mount(<App />);
-    const component = wrapper.instance();
-    const pointList = wrapper.find('PointList');
-
-    component.addLocationPoint('Москва');
-    component.deleteLocationPoint(0);
-    pointList.update();
-
-    expect(wrapper.find('PointListItem')).toHaveLength(0);
-  });
-
   it('moves a location point from one index to another in the state', () => {
     const wrapper = shallow(<App />);
     const component = wrapper.instance();
@@ -170,31 +143,33 @@ describe('<App />', () => {
     expect(firstPoint.value).toBe(lastFakePoint.value);
   });
 
-  it('moves location points from one position to another inside PointList', async () => {
-    expect.assertions(5);
-
-    const wrapper = mount(<App />);
+  it('delete a location point with the given id', async () => {
+    const wrapper = shallow(<App />);
     const component = wrapper.instance();
-    const pointList = wrapper.find('PointList');
-    const firstAddress = 'Москва';
-    const secondAddress = 'Санкт-Питербург';
+    const deleteAddress = 'Москва, Библио-Глобус';
 
-    await component.addLocationPoint(firstAddress);
-    await component.addLocationPoint(secondAddress);
-    pointList.update();
+    await component.addLocationPoint('Москва, Новый Арбат');
+    await component.addLocationPoint('Москва, Рижская станция');
+    const shouldDelete = await component.addLocationPoint(deleteAddress);
+    await component.addLocationPoint('Москва, Арбат');
 
-    let items = wrapper.find('PointListItem');
-    
-    expect(items.first().text()).toBe(firstAddress);
-    expect(items.last().text()).toBe(secondAddress);
+    component.deleteLocationPoint(shouldDelete.id);
 
-    component.moveLocationPoint(0, 1);
-    pointList.update();
+    expect(wrapper.state().locations).not.toContain(shouldDelete);
+  });
 
-    items = wrapper.find('PointListItem');
+  it('delete duplicated location points', async () => {
+    const wrapper = shallow(<App />);
+    const component = wrapper.instance();
 
-    expect(items).not.toHaveLength(0);
-    expect(items.first().text()).toBe(secondAddress);
-    expect(items.last().text()).toBe(firstAddress);
+    const shouldDelete = [];
+
+    shouldDelete[0] = await component.addLocationPoint('Москва, Новый Арбат');
+    shouldDelete[1] = await component.addLocationPoint('Москва, Новый Арбат');
+
+    component.deleteLocationPoint(shouldDelete[0].id);
+    component.deleteLocationPoint(shouldDelete[1].id);
+
+    expect(wrapper.state().locations).toHaveLength(0);
   });
 });
