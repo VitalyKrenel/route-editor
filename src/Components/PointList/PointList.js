@@ -23,7 +23,7 @@ export class PointList extends React.Component {
 
     return (
       <ul
-        className="PointList"
+        className="PointList App-PointList"
         ref={innerRef}
         { ...droppableProps }
       >

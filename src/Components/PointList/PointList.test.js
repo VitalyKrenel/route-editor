@@ -54,7 +54,7 @@ describe('<PointList />', () => {
     expect(handleDelete).toHaveBeenCalled();
   });
 
-  it('renders children when passed in', () => {
+  it('renders children passed into component correctly', () => {
     const locations = [
       createLocationPoint('Москва, Новый Арбат'),
       createLocationPoint('Москва, Арбат'),
@@ -73,5 +73,7 @@ describe('<PointList />', () => {
     expect(
       wrapper.containsAllMatchingElements(items)
     ).toBe(true);
-  })
+  });
+
+
 });

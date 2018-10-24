@@ -5,6 +5,7 @@ import { withYMaps } from 'react-yandex-maps';
 import MapContainer from './Components/MapContainer/MapContainer.js';
 import PointInput from './Components/PointInput/PointInput.js';
 import { DraggablePointList } from './Components/PointList/PointList.js';
+import { ScreenToggler } from './Components/ScreenToggler/ScreenToggler.js';
 
 import {
   addLocationPoint,
@@ -15,7 +16,10 @@ import {
 } from './LocationPoint/LocationPoint.js';
 import { notEmptyArray } from './Utils/Array.js'
 
-const createLocationPoint = makeLocationPointFactory();
+export const viewList = ['App-PointList', 'App-MapContainer'];
+const shouldBeHidden = (view, activeView) => (
+  view !== activeView ? 'is-hidden' : ''
+);
 
 export class App extends Component {
   constructor(props) {
@@ -23,8 +27,12 @@ export class App extends Component {
 
     this.state = {
       locations: [],
+      activeView: viewList[0],
     };
 
+    this.createLocationPoint = makeLocationPointFactory();
+
+    this.toggleView = this.toggleView.bind(this);
     this.addLocationPoint = this.addLocationPoint.bind(this);
     this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
     this.moveLocationPoint = this.moveLocationPoint.bind(this);
@@ -48,9 +56,19 @@ export class App extends Component {
     );
   }
 
+  toggleView() {
+    const nextView = (view) => (
+      view === viewList[0] ? viewList[1] : viewList[0]
+    );
+
+    this.setState((state) => ({
+      activeView: nextView(state.activeView),
+    }));
+  }
+
   async addLocationPoint(value) {
     const coords = await this.fetchPointCoords(value);
-    const locationPoint = createLocationPoint(value, coords);
+    const locationPoint = this.createLocationPoint(value, coords);
 
     const updateState = (state) => ({
       locations: addLocationPoint(state.locations, locationPoint),
@@ -67,9 +85,9 @@ export class App extends Component {
     });
   }
 
-  deleteLocationPoint(index) {
+  deleteLocationPoint(id) {
     this.setState((state) => ({
-      locations: deleteLocationPoint(state.locations, index),
+      locations: deleteLocationPoint(state.locations, id),
     }));
   }
 
@@ -106,18 +124,35 @@ export class App extends Component {
   }
 
   render() {
+    const { activeView } = this.state; 
+
     return (
       <main className="App">
-        <div className="App-Dashboard">
-          <PointInput onSubmit={this.addLocationPoint} />
-          <DraggablePointList
-            onDragEnd={this.moveLocationPoint}
-            onDelete={this.deleteLocationPoint}
-            locations={this.state.locations} />
+        <div className="
+          App-InnerContainer
+          App-InnerContainer_row
+          App-InnerContainer_fluid
+        ">
+          <div className={`
+            App-Dashboard
+            ${shouldBeHidden(viewList[0], activeView)}
+          `}>
+            <PointInput onSubmit={this.addLocationPoint} />
+            <DraggablePointList
+              onDragEnd={this.moveLocationPoint}
+              onDelete={this.deleteLocationPoint}
+              locations={this.state.locations} />
+          </div>
+          <MapContainer
+            className={shouldBeHidden(viewList[1], activeView)}
+            locations={this.state.locations}
+            onWayPointDrag={this.updateLocationPoint} 
+          />     
         </div>
-        <MapContainer
-          locations={this.state.locations}
-          onWayPointDrag={this.updateLocationPoint} 
+        <ScreenToggler
+          onToggle={this.toggleView}
+          initialLabel="Показать карту"
+          toggledLabel="Показать список точек"
         />
       </main>
     );

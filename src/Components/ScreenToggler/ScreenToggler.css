@@ -1,0 +1,17 @@
+.ScreenToggler {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+
+  font-size: 16px;
+
+  background: hsla(390, 88%, 66%, 1);
+  border: none;
+  border-radius: 5px;
+}
+
+@media (width > 600px) {
+  .ScreenToggler {
+    display: none;
+  }
+}

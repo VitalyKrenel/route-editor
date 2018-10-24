@@ -1,6 +1,6 @@
 :root {
-  --Map-width: 600px;
-  --Map-height: 600px;
+  --Map-width-md: 600px;
+  --Map-height-md: 600px;
 }
 
 .MapContainer {
@@ -10,14 +10,26 @@
   justify-content: center;
   align-items: center;
 
+  background: #eee;
+}
+
+.MapContainer_size_md {
   /*
    * Note: Container sizing required to allow centered loader spinner to be
    * shown while Map is still loading.
    */
-  width: var(--Map-width);
-  height: var(--Map-height);
+  width: var(--Map-width-md);
+  height: var(--Map-height-md);
+}
 
-  background: #eee;
+.MapContainer_size_fluid {
+  flex: 1 2 600px;
+  overflow: hidden;
+}
+
+.MapContainer_max-size_md {
+  max-width: var(--Map-width-md);
+  max-width: var(--Map-height-md);
 }
 
 .MapContainer_status_loading::after {
@@ -38,8 +50,8 @@
 }
 
 .Map {
-  width: var(--Map-width);
-  height: var(--Map-height);
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes spin {
