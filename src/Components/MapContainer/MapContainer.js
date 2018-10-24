@@ -3,7 +3,7 @@ import './MapContainer.css';
 import React, { Component } from 'react';
 import { Map } from 'react-yandex-maps';
 
-import { diffPoints } from 'Utils/MapPoints.js';
+import { diffPoints } from 'Utils/Points.js';
 
 const modules = [
   'multiRouter.MultiRoute',

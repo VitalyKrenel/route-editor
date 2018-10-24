@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 
-import { diffPoints } from './MapPoints.js';
+import { diffPoints } from './Points.js';
 
 const getFakeWayPoint = (coords = [99, 99], request = 'fake_request') => ({
   properties: {
