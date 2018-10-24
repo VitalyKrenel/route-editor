@@ -149,7 +149,11 @@ export default class MapContainer extends Component {
   render() {
     return (
       <div
-        className="MapContainer MapContainer_size_fluid MapContainer_max-size_md MapContainer_status_loading"
+        className="
+          MapContainer
+          MapContainer_size_fluid
+          MapContainer_max-size_md
+          MapContainer_status_loading"
         ref={this.container}
       >
         <Map
