@@ -197,4 +197,34 @@ describe('<App />', () => {
     expect(items.first().text()).toBe(secondAddress);
     expect(items.last().text()).toBe(firstAddress);
   });
+
+  it('delete a location point with the given id', async () => {
+    const wrapper = shallow(<App />);
+    const component = wrapper.instance();
+    const deleteAddress = 'Москва, Библио-Глобус';
+
+    await component.addLocationPoint('Москва, Новый Арбат');
+    await component.addLocationPoint('Москва, Рижская станция');
+    const shouldDelete = await component.addLocationPoint(deleteAddress);
+    await component.addLocationPoint('Москва, Арбат');
+
+    component.deleteLocationPoint(shouldDelete.id);
+
+    expect(wrapper.state().locations).not.toContain(shouldDelete);
+  });
+
+  it('delete duplicated location points', async () => {
+    const wrapper = shallow(<App />);
+    const component = wrapper.instance();
+
+    const shouldDelete = [];
+
+    shouldDelete[0] = await component.addLocationPoint('Москва, Новый Арбат');
+    shouldDelete[1] = await component.addLocationPoint('Москва, Новый Арбат');
+
+    component.deleteLocationPoint(shouldDelete[0].id);
+    component.deleteLocationPoint(shouldDelete[1].id);
+
+    expect(wrapper.state().locations).toHaveLength(0);
+  });
 });
