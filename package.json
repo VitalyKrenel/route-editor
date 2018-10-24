@@ -2,6 +2,7 @@
   "name": "route-editor",
   "version": "1.1.0",
   "private": true,
+  "homepage": "https://vitalykrenel.github.io/route-editor/",
   "dependencies": {
     "react": "^16.5.2",
     "react-beautiful-dnd": "^9.0.2",
@@ -12,6 +13,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test --modulePaths=src",
     "test:unit": "cross-env CI=true react-scripts test \".*[^i]test\\.js$\" --verbose=true --modulePaths=src",
     "test:integration": "cross-env CI=true react-scripts test \".*itest\\.js$\" --modulePaths=src",
@@ -39,6 +42,7 @@
     "cross-env": "^5.2.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
+    "gh-pages": "^2.0.1",
     "sinon": "^7.0.0",
     "stylelint": "^9.6.0",
     "stylelint-config-standard": "^18.2.0",
