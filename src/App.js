@@ -67,9 +67,9 @@ export class App extends Component {
     });
   }
 
-  deleteLocationPoint(index) {
+  deleteLocationPoint(id) {
     this.setState((state) => ({
-      locations: deleteLocationPoint(state.locations, index),
+      locations: deleteLocationPoint(state.locations, id),
     }));
   }
 
