@@ -22,7 +22,7 @@ npm run test:unit
 
 > В данном случае я отношу к интеграционным тесты, которые пытаются охватить несколько компонентов или их взаимодействие. Тесты данного типа находятся в папке `src/__tests__`.
 
-Запустить все inetgration-тесты с --verbose флагом, без watch режима:
+Запустить все integration-тесты с --verbose флагом, без watch режима:
 
 ```
 npm run test:integration
@@ -35,7 +35,7 @@ npm run test:integration
 - В основе UI - [React](https://facebook.github.io/create-react-app/)
 
 #### CSS Методология
-Для написания CSS использовался BEM подход (с React [соглашением по именованию](https://en.bem.info/methodology/naming-convention/#react-style)
+Для написания CSS использовался BEM подход (с React [соглашением по именованию](https://en.bem.info/methodology/naming-convention/#react-style))
 
 
 #### Notes:
