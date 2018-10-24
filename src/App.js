@@ -15,16 +15,23 @@ import {
 } from './LocationPoint/LocationPoint.js';
 import { notEmptyArray } from './Utils/Array.js'
 
+export const viewList = ['App-PointList', 'App-MapContainer'];
+const shouldBeHidden = (view, activeView) => (
+  view !== activeView ? 'is-hidden' : ''
+);
+
 export class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       locations: [],
+      activeView: viewList[0],
     };
 
     this.createLocationPoint = makeLocationPointFactory();
 
+    this.toggleView = this.toggleView.bind(this);
     this.addLocationPoint = this.addLocationPoint.bind(this);
     this.deleteLocationPoint = this.deleteLocationPoint.bind(this);
     this.moveLocationPoint = this.moveLocationPoint.bind(this);
@@ -46,6 +53,16 @@ export class App extends Component {
     return this.fetch(coordinates).then(response => 
       response.geoObjects.get(0).getAddressLine()
     );
+  }
+
+  toggleView() {
+    const nextView = (view) => (
+      view === viewList[0] ? viewList[1] : viewList[0]
+    );
+
+    this.setState((state) => ({
+      activeView: nextView(state.activeView),
+    }));
   }
 
   async addLocationPoint(value) {
@@ -106,9 +123,19 @@ export class App extends Component {
   }
 
   render() {
+    const { activeView } = this.state; 
+
     return (
       <main className="App">
-        <div className="App-Dashboard">
+        <div className="
+          App-InnerContainer
+          App-InnerContainer_row
+          App-InnerContainer_fluid
+        ">
+          <div className={`
+            App-Dashboard
+            ${shouldBeHidden(viewList[0], activeView)}
+          `}>
           <PointInput onSubmit={this.addLocationPoint} />
           <DraggablePointList
             onDragEnd={this.moveLocationPoint}
@@ -116,9 +143,11 @@ export class App extends Component {
             locations={this.state.locations} />
         </div>
         <MapContainer
+            className={shouldBeHidden(viewList[1], activeView)}
           locations={this.state.locations}
           onWayPointDrag={this.updateLocationPoint} 
         />
+        </div>
       </main>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 
-import { App } from './App.js';
+import { App, viewList } from './App.js';
 // import * as ReactYandexMaps from 'react-yandex-maps';
 
 // jest.mock('react-yandex-maps', () => () => ({
@@ -40,6 +40,23 @@ describe('<App />', () => {
   it('renders without crashing', () => {
     const wrapper = shallow(<App ymaps={fakeYmaps} />);
     expect(wrapper).toHaveLength(1);
+  });
+
+  it('toggles view correctly', () => {
+    const wrapper = shallow(<App />); 
+    
+    wrapper.instance().toggleView();
+
+    expect(wrapper.state().activeView).toBe(viewList[1]);
+  });
+
+  it('comes back to initial view if toggled twice', () => {
+    const wrapper = shallow(<App />); 
+    
+    wrapper.instance().toggleView();
+    wrapper.instance().toggleView();
+
+    expect(wrapper.state().activeView).toBe(viewList[0]);
   });
 
   it('adds a new location point to state', async () => {
