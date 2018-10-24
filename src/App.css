@@ -13,6 +13,23 @@
   background: #fff;
 }
 
+.App-InnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+
+  margin-bottom: 20px;
+}
+
+.App-InnerContainer_row {
+  flex-direction: row;
+}
+
+.App-InnerContainer_fluid {
+  flex: 1 1 100%;
+  width: 100%;
+}
+
 .App-Dashboard {
   display: flex;
   flex: 2 1 300px;
