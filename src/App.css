@@ -17,9 +17,8 @@
   display: flex;
   flex: 2 1 300px;
   flex-direction: column;
-  /* width: 100%; */
   max-width: 300px;
-  margin-right: 30px;
+  margin-right: 40px;
 }
 
 .App-PointList {
