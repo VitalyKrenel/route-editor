@@ -34,6 +34,10 @@ export default class MapContainer extends Component {
     this.container = React.createRef();
     this.ymaps = null;
 
+    this.state = {
+      loaded: false,
+    };
+
     this.handleLoad = this.handleLoad.bind(this);
     this.handleRouteRequestSuccess = this.handleRouteRequestSuccess.bind(this);
 
@@ -142,19 +146,25 @@ export default class MapContainer extends Component {
     });
 
 
-    this.container.current.classList.remove('MapContainer_status_loading');
+    this.setState({ loaded: true });
     this.map.geoObjects.add(this.initialRoute);
   }
 
   render() {
+    const { className = '' } = this.props;
+    const loadingModifier =
+      (this.state.loaded ? '' : 'MapContainer_status_loading');
+
     return (
       <div
-        className="
+        className={`
           MapContainer
+          App-MapContainer
+          ${className}
+          ${loadingModifier}
           MapContainer_size_fluid
           MapContainer_max-size_md
-          MapContainer_status_loading"
-        ref={this.container}
+        `}
       >
         <Map
           className="Map"
