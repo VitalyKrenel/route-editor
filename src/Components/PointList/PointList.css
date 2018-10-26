@@ -1,5 +1,6 @@
 :root {
   --dnd-width: 28px;
+  --PointList-black: #333;
 }
 
 .PointList {
@@ -23,14 +24,14 @@
   justify-content: center;
   align-items: center;
 
-  border-color: #333;
+  border-color: var(--PointList-black);
 }
 
 .PointList:empty::after {
   display: block;
   width: 200px;
 
-  color: 333;
+  color: var(--PointList-black);
   font: italic 14px/1.5 Ubuntu, Arial, sans-serif;
   text-align: center;
 
