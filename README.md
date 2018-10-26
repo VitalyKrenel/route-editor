@@ -4,6 +4,8 @@
 
 Условие задания можно прочесть [здесь](https://dl.funbox.ru/qt-js.pdf).
 
+Ответы на вопросы части Level I расположены в отдельном [PDF документе](https://github.com/VitalyKrenel/route-editor/blob/master/Test_assignment_Level-1.pdf).
+
 Запуск:
 ```
  npm install
