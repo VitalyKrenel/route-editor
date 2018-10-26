@@ -1,5 +1,5 @@
 :root {
-  --dnd-width: 28px;
+  --dnd-width: 36px;
   --PointList-black: #333;
 }
 
@@ -45,7 +45,7 @@
   width: calc(100% - var(--dnd-width) - var(--margin-right));
   margin-right: var(--margin-right);
   margin-bottom: 15px;
-  padding: 7px 35px 8px 15px;
+  padding: 7px 35px 8px 10px;
 }
 
 .PointList-Item:last-of-type {
@@ -53,6 +53,8 @@
 }
 
 .Item-Icon {
+  --icon-background: hsl(0, 0%, 82%);
+
   position: absolute;
   top: 0;
   bottom: 0;
@@ -61,18 +63,20 @@
   display: block;
   width: var(--dnd-width);
 
-  background: hsla(390, 88%, 66%, 1) url('Icons/drag-and-drop.svg') center/16px no-repeat;
+  background: var(--icon-background) url('Icons/drag-and-drop.svg') center/16px no-repeat;
 }
 
 .Item {
   position: relative;
   z-index: 1;
 
-  background: hsla(56, 100%, 80%, 1);
+  background: hsl(0, 0%, 95%);
 }
 
 .Item-Location {
+  color: var(--PointList-black);
   font-size: 14px;
+
   line-height: 1.5;
   overflow-wrap: break-word;
 }
