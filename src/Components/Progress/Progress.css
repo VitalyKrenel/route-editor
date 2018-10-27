@@ -1,0 +1,34 @@
+.Progress {
+  --duration-moderate: 0.9s;
+
+  display: block;
+  width: 64px;
+  height: 64px;
+
+  border: 2px solid rgba(87, 87, 87, 0.4);
+  border-top: 2px solid rgb(62, 78, 216);
+  border-left: 2px solid rgb(62, 78, 216);
+  border-radius: 50%;
+}
+
+.Progress_status_idle {
+  display: none;
+}
+
+.Progress_status_loading {
+  animation: spin var(--duration-moderate) ease-in-out infinite;
+}
+
+.Progress_status_done {
+  /* Todo: Some done styling/animation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
