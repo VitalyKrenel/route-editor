@@ -41,7 +41,7 @@ export default class MapContainer extends Component {
     this.handleLoad = this.handleLoad.bind(this);
     this.handleRouteRequestSuccess = this.handleRouteRequestSuccess.bind(this);
 
-    this.updateMapCenter = this.updateMapCenter.bind(this);
+    // this.updateMapCenter = this.updateMapCenter.bind(this);
   }
 
   componentDidMount() {
@@ -64,21 +64,6 @@ export default class MapContainer extends Component {
      */
     this.updateRoute(locations);
 
-    if (locations.length > prevProps.locations.length) {
-      // Set map center if a new point was added when route is done updating
-      this.initialRoute.model.events.once('requestsuccess', () => {
-        const wayPoints = this.initialRoute.getWayPoints();
-        const lastWayPoint = wayPoints.get(wayPoints.getLength() - 1);
-
-        this.updateMapCenter(lastWayPoint.geometry.getCoordinates());
-      });
-    }
-  }
-
-  updateMapCenter(coords) {
-    this.map.setCenter(coords, mapDefaults.zoom, {
-      duration: 500,
-    });
   }
 
   updateRoute(locations) {
@@ -175,7 +160,7 @@ export default class MapContainer extends Component {
       >
         <Map
           className="Map"
-          modules={modules}  
+          modules={modules}
           defaultState={mapDefaults}
           onLoad={this.handleLoad}
           instanceRef={ref => (this.map = ref)}
