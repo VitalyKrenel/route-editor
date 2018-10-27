@@ -2,10 +2,25 @@
   --PointInput-height: 36px;
 }
 
-.PointInput {
+.PointInput-Form {
+  position: relative;
+  /* display: flex; */
+}
+
+.PointInput-Field {
   width: 100%;
   height: var(--PointInput-height);
   padding: 10px 5px;
 
   font-size: 16px;
+}
+
+.PointInput-Progress {
+  position: absolute;
+  top: 0;
+  right: -25px;
+  bottom: 0;
+
+  margin-top: auto;
+  margin-bottom: auto;
 }
