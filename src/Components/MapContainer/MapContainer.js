@@ -1,9 +1,11 @@
 import './MapContainer.css';
 
 import React, { Component } from 'react';
-import { Map } from 'react-yandex-maps';
+import { Map as YandexMap, Placemark, Polyline } from 'react-yandex-maps';
 
-import { diffPoints } from 'Utils/Points.js';
+YandexMap.displayName = 'Map';
+Placemark.displayName = 'Placemark';
+Polyline.displayName = 'Polyline';
 
 const modules = [
   'geocode',
@@ -40,7 +42,7 @@ export default class MapContainer extends Component {
   }
 
   render() {
-    const { className = '' } = this.props;
+    const { locations, className = '' } = this.props;
     const loadingModifier =
       (this.state.loaded ? '' : 'MapContainer_status_loading');
 
@@ -55,14 +57,37 @@ export default class MapContainer extends Component {
           MapContainer_max-size_md
         `}
       >
-        <Map
+        <YandexMap
           className="Map"
           modules={modules}
           defaultState={mapDefaults}
           onLoad={this.handleLoad}
           instanceRef={ref => (this.map = ref)}
         >
-        </Map>
+        {
+          locations.map((location) => (
+            <Placemark
+              properties={{
+                iconCaption: location.value,
+                balloonContentBody: location.value,
+              }}
+              options={{
+                preset: 'islands#circleDotIcon',
+                iconColor: '#FF270F',
+              }}
+              key={location.id}
+              geometry={location.coords} 
+            />
+          ))
+        }
+        <Polyline
+          geometry={locations.map(loc => loc.coords)}
+          options={{
+            strokeColor: '#FF270F',
+            strokeWidth: 4,
+          }}
+        />
+        </YandexMap>
       </div>
     );
   }
