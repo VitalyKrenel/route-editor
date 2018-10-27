@@ -41,6 +41,23 @@ export default class MapContainer extends Component {
     this.setState({ loaded: true });
   }
 
+  getPlacemark(locationPoint) {
+    return (
+      <Placemark
+        properties={{
+          iconCaption: locationPoint.value,
+          balloonContentBody: locationPoint.value,
+        }}
+        options={{
+          preset: 'islands#circleDotIcon',
+          iconColor: '#FF270F',
+        }}
+        key={locationPoint.id}
+        geometry={locationPoint.coords} 
+      />
+    );
+  }
+
   render() {
     const { locations, className = '' } = this.props;
     const loadingModifier =
@@ -64,22 +81,7 @@ export default class MapContainer extends Component {
           onLoad={this.handleLoad}
           instanceRef={ref => (this.map = ref)}
         >
-        {
-          locations.map((location) => (
-            <Placemark
-              properties={{
-                iconCaption: location.value,
-                balloonContentBody: location.value,
-              }}
-              options={{
-                preset: 'islands#circleDotIcon',
-                iconColor: '#FF270F',
-              }}
-              key={location.id}
-              geometry={location.coords} 
-            />
-          ))
-        }
+        { locations.map((location) => this.getPlacemark(location)) }
         <Polyline
           geometry={locations.map(loc => loc.coords)}
           options={{
