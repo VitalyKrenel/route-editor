@@ -22,3 +22,4 @@ it = (description, fn, ...args) => {
 
 it.only = originalTest.only;
 it.skip = originalTest.skip;
+it.each = originalTest.each;
