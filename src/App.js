@@ -68,9 +68,9 @@ export class App extends Component {
     }));
   }
 
-  async addLocationPoint(value, coords = []) {
+  async addLocationPoint(value) {
     // const coords = await this.fetchPointCoords(value);
-    const locationPoint = this.createLocationPoint(value, coords);
+    const locationPoint = this.createLocationPoint(value, this.mapCenter);
 
     const updateState = (state) => ({
       locations: addLocationPoint(state.locations, locationPoint),
