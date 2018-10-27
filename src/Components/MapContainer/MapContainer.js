@@ -44,6 +44,10 @@ export default class MapContainer extends Component {
     this.updateMapCenter = this.updateMapCenter.bind(this);
   }
 
+  componentDidMount() {
+    this.props.onBoundsChange(mapDefaults.center);
+  }
+
   componentDidUpdate(prevProps) {
     if (!this.ymaps) { return; }
 
@@ -130,7 +134,7 @@ export default class MapContainer extends Component {
 
   handleLoad(ymaps) {
     this.ymaps = ymaps;
-    const { locations } = this.props;
+    const { locations, onBoundsChange } = this.props;
 
     this.initialRoute = new ymaps.multiRouter.MultiRoute({
       referencePoints: locations.map((loc) => loc.value),
@@ -145,6 +149,9 @@ export default class MapContainer extends Component {
       this.handleRouteRequestSuccess(ymaps, event);
     });
 
+    this.map.events.add('boundschange', (e) => {
+      onBoundsChange(e.get('newCenter'));
+    });
 
     this.setState({ loaded: true });
     this.map.geoObjects.add(this.initialRoute);

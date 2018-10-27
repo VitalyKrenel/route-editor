@@ -30,6 +30,8 @@ export class App extends Component {
       activeView: viewList[0],
     };
 
+    this.mapCenter = [];
+
     this.createLocationPoint = makeLocationPointFactory();
 
     this.toggleView = this.toggleView.bind(this);
@@ -66,8 +68,8 @@ export class App extends Component {
     }));
   }
 
-  async addLocationPoint(value) {
-    const coords = await this.fetchPointCoords(value);
+  async addLocationPoint(value, coords = []) {
+    // const coords = await this.fetchPointCoords(value);
     const locationPoint = this.createLocationPoint(value, coords);
 
     const updateState = (state) => ({
@@ -144,6 +146,7 @@ export class App extends Component {
               locations={this.state.locations} />
           </div>
           <MapContainer
+            onBoundsChange={(coords) => { this.mapCenter = coords; }}
             className={shouldBeHidden(viewList[1], activeView)}
             locations={this.state.locations}
             onWayPointDrag={this.updateLocationPoint} 
