@@ -57,6 +57,7 @@ export default class MapContainer extends Component {
           preset: 'islands#circleDotIcon',
           iconColor: '#FF270F',
           draggable: true,
+          hideIconOnBalloonOpen: false,
         }}
         key={locationPoint.id}
         geometry={locationPoint.coords} 
