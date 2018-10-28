@@ -41,15 +41,22 @@ export default class MapContainer extends Component {
     this.setState({ loaded: true });
   }
 
-  getPlacemark(locationPoint) {
+  getPlacemark(locationPoint, index) {
+    const { onPlacemarkDragEnd } = this.props;
+  
     return (
       <Placemark
+        onDragend={(e) => {
+          const coords = e.get('target').geometry.getCoordinates();
+          onPlacemarkDragEnd(index, { coords });
+        }}
         properties={{
           balloonContentBody: locationPoint.value,
         }}
         options={{
           preset: 'islands#circleDotIcon',
           iconColor: '#FF270F',
+          draggable: true,
         }}
         key={locationPoint.id}
         geometry={locationPoint.coords} 
@@ -80,7 +87,7 @@ export default class MapContainer extends Component {
           onLoad={this.handleLoad}
           instanceRef={ref => (this.map = ref)}
         >
-        { locations.map((location) => this.getPlacemark(location)) }
+        { locations.map((location, i) => this.getPlacemark(location, i)) }
         <Polyline
           geometry={locations.map(loc => loc.coords)}
           options={{

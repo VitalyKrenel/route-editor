@@ -141,7 +141,7 @@ export class App extends Component {
             onBoundsChange={(coords) => { this.mapCenter = coords; }}
             className={shouldBeHidden(viewList[1], activeView)}
             locations={this.state.locations}
-            onWayPointDrag={this.updateLocationPoint} 
+            onPlacemarkDragEnd={this.updateLocationPoint} 
           />     
         </div>
         <ScreenToggler
