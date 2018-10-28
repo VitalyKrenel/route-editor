@@ -14,7 +14,6 @@ import {
   updateLocationPoint,
   makeLocationPointFactory,
 } from './LocationPoint/LocationPoint.js';
-import { notEmptyArray } from './Utils/Array.js'
 
 export const viewList = ['App-PointList', 'App-MapContainer'];
 const shouldBeHidden = (view, activeView) => (
