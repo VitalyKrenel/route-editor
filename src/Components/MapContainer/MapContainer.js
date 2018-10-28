@@ -45,7 +45,6 @@ export default class MapContainer extends Component {
     return (
       <Placemark
         properties={{
-          iconCaption: locationPoint.value,
           balloonContentBody: locationPoint.value,
         }}
         options={{
