@@ -104,14 +104,6 @@ export class App extends Component {
       locations: updateLocationPoint(state.locations, index, update),
     });
 
-    if (notEmptyArray(update.coords)) {
-      // Fetch a corresponding address
-      update.value = await this.fetchPointAddress(update.coords); 
-    } else if (update.value) {
-      // Fetch a corresponding coordinates
-      update.coords = await this.fetchPointCoords(update.value);
-    }
-
     // Return a new promise that will be resolved only after
     // the state is updated
     return new Promise((resolve, reject) => {
